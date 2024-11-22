@@ -1,4 +1,4 @@
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
@@ -16,7 +16,6 @@ export default function Home() {
 				}}
 			/>
 			<Text>Home Screen</Text>
-			<Link href={{ pathname: "details" }}>Go to Details</Link>
 		</View>
 	);
 }
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
+
 	image: {
 		width: 50,
 		height: 50,

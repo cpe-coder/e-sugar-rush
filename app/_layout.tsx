@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-export default function Layout() {
+export default function RootLayout() {
 	return (
 		<Stack
 			screenOptions={{
@@ -12,6 +12,12 @@ export default function Layout() {
 					fontWeight: "bold",
 				},
 			}}
-		/>
+		>
+			{/* Optionally configure static options outside the route.*/}
+			<Stack.Screen
+				name="home"
+				options={{ title: "Home", headerTitleStyle: { fontWeight: "bold" } }}
+			/>
+		</Stack>
 	);
 }
