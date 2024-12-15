@@ -1,6 +1,7 @@
 import EsugarLogo from "@/assets/logo/esugarLogo.png";
 import Sugarcane from "@/assets/logo/sugarcane.png";
 import Checkbox from "expo-checkbox";
+import { Link } from "expo-router";
 import React, { useState } from "react";
 import {
 	Dimensions,
@@ -15,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
 	const [isChecked, setIsChecked] = useState(false);
+
 	return (
 		<SafeAreaView className="bg-primary h-full">
 			<ScrollView>
@@ -59,9 +61,12 @@ const SignIn = () => {
 						</View>
 
 						<View className="flex-row  justify-between w-full px-6 mt-8 mb-6">
-							<TouchableOpacity className="rounded-xl border-2 border-yellow px-3 py-2 ">
+							<Link
+								href={"/sign-up"}
+								className="rounded-xl border-2 border-yellow px-3 py-2 "
+							>
 								<Text className="text-white">CREATE ACCOUNT</Text>
-							</TouchableOpacity>
+							</Link>
 							<TouchableOpacity className="rounded-xl bg-yellow p-2 text-black w-28 flex items-center justify-center">
 								<Text>LOGIN</Text>
 							</TouchableOpacity>
