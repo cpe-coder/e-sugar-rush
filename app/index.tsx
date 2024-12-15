@@ -1,4 +1,4 @@
-import EsugarLogo from "@/assets/logo/esugarLogo.png";
+import logo from "@/constant/logo";
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
@@ -16,7 +16,7 @@ export default function Index() {
 		<Redirect href={"/sign-in"} />
 	) : (
 		<View className="flex items-center justify-center h-full w-full bg-primary">
-			<Image resizeMode="contain" source={EsugarLogo} alt="EsugarLogo" />
+			<Image resizeMode="contain" source={logo.EsugarLogo} alt="EsugarLogo" />
 		</View>
 	);
 }
