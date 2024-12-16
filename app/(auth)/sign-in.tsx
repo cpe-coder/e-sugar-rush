@@ -17,9 +17,30 @@ import components from "./../../constant/components";
 const SignIn = () => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [isPressed, setIsPressed] = useState(false);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleChangeEmail = (e: any) => {
+		e.nativeEvent.text;
+
+		const value = e.target.value;
+
+		setEmail(value);
+	};
+	const handleChangePassword = (e: any) => {
+		e.nativeEvent.text;
+
+		const value = e.target.value;
+
+		setPassword(value);
+	};
 
 	const handlePressed = () => {
 		setIsPressed(true);
+	};
+
+	const handleLogin = () => {
+		console.log(email);
 	};
 
 	if (isPressed) {
@@ -42,8 +63,18 @@ const SignIn = () => {
 							Hello, log in to your profile
 						</Text>
 						<View className="flex-col w-full px-6 gap-8 justify-center items-center">
-							<components.CustomInput placeholder="Email" inputMode="email" />
-							<components.CustomInput inputMode="text" placeholder="Password" />
+							<components.CustomInput
+								value={email}
+								onChange={handleChangeEmail}
+								placeholder="Email"
+								inputMode="email"
+							/>
+							<components.PasswordInput
+								value={password}
+								onChange={handleChangePassword}
+								inputMode="text"
+								placeholder="Password"
+							/>
 						</View>
 
 						<View className="flex-row w-full py-4 justify-between px-6 ">
@@ -72,7 +103,7 @@ const SignIn = () => {
 							/>
 							<components.CustomButton
 								text="LOGIN"
-								onPress={() => null}
+								onPress={handleLogin}
 								style="bg-yellow w-28"
 								textStyle="text-black"
 							/>
