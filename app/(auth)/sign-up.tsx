@@ -1,9 +1,9 @@
+import components from "@/components";
 import logo from "@/constant/logo";
 import { Redirect } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import components from "./../../constant/components";
 
 const SignUp = () => {
 	const [isPressed, setIsPressed] = useState(false);
@@ -21,11 +21,28 @@ const SignUp = () => {
 				<View className="flex w-full h-full justify-center items-center px-10">
 					<Image className="mt-32" source={logo.EsugarLogo} />
 					<Text className="-mt-6 text-white">Register free here</Text>
-					<View className="gap-8 w-full pt-8 pb-10 flex-col items-center justify-center">
-						<components.CustomInput inputMode="text" placeholder="UserName" />
-						<components.CustomInput inputMode="email" placeholder="Email" />
-						<components.CustomInput inputMode="text" placeholder="Password" />
+					<View className="gap-8 w-full pt-10 pb-10 flex-col items-center justify-center">
 						<components.CustomInput
+							value={""}
+							onChange={() => null}
+							inputMode="text"
+							placeholder="UserName"
+						/>
+						<components.CustomInput
+							value={""}
+							onChange={() => null}
+							inputMode="email"
+							placeholder="Email"
+						/>
+						<components.PasswordInput
+							value={""}
+							onChange={() => ""}
+							inputMode="text"
+							placeholder="Password"
+						/>
+						<components.CustomInput
+							value={""}
+							onChange={() => null}
 							inputMode="tel"
 							placeholder="Mobile Number"
 						/>

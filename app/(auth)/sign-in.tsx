@@ -1,4 +1,5 @@
 import Sugarcane from "@/assets/logo/sugarcane.png";
+import components from "@/components";
 import logo from "@/constant/logo";
 import Checkbox from "expo-checkbox";
 import { Redirect } from "expo-router";
@@ -12,8 +13,6 @@ import {
 	View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import components from "./../../constant/components";
-
 const SignIn = () => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [isPressed, setIsPressed] = useState(false);
