@@ -36,7 +36,7 @@ const SignIn = () => {
 					}}
 				>
 					<Image className="w-full" resizeMode="contain" source={Sugarcane} />
-					<View className="w-full border flex-col blur-md items-center backdrop-blur-sm  pb-8 border-gray-300 rounded-3xl -mt-12">
+					<View className="w-full border flex-col blur-md items-center backdrop-blur-sm  pb-8 border-gray-300 bg-backdrop rounded-3xl -mt-12">
 						<Image source={logo.EsugarLogo} resizeMode="contain" />
 						<Text className="-mt-5 mb-10 text-xl text-white">
 							Hello, log in to your profile
