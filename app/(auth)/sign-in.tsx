@@ -73,6 +73,7 @@ const SignIn = () => {
 								onChange={handleChangePassword}
 								inputMode="text"
 								placeholder="Password"
+								styleProp="mx-[107px] mt-[12px]"
 							/>
 						</View>
 

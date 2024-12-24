@@ -2,11 +2,13 @@ import icons from "@/constant/icons";
 import React from "react";
 import { Image, View } from "react-native";
 
-const HiddenEye = () => {
+const HiddenEye = ({ style }: { style: string }) => {
 	return (
-		<View className="absolute p-0 mx-28 mt-[8px]">
+		<View
+			className={`absolute  h-16 w-16 items-center justify-center p-0 ${style}`}
+		>
 			<Image
-				className="w-10"
+				className="w-7 h-7"
 				resizeMode="contain"
 				tintColor="#024f8e"
 				source={icons.ClosedEye}

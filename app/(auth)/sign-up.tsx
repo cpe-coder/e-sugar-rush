@@ -39,6 +39,7 @@ const SignUp = () => {
 							onChange={() => ""}
 							inputMode="text"
 							placeholder="Password"
+							styleProp="mx-[115px] mt-[12px]"
 						/>
 						<components.CustomInput
 							value={""}

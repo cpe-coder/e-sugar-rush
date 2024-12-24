@@ -9,11 +9,13 @@ import HiddenEye from "./hidden-eye";
 import VisibleEye from "./visible-eye";
 
 const PasswordInput = ({
+	styleProp,
 	placeholder,
 	inputMode,
 	value,
 	onChange,
 }: {
+	styleProp: string;
 	placeholder: string;
 	inputMode: any;
 	value: string;
@@ -40,7 +42,11 @@ const PasswordInput = ({
 			/>
 
 			<Pressable className="absolute" onPress={handleVisibility}>
-				{isVisible ? <VisibleEye /> : <HiddenEye />}
+				{isVisible ? (
+					<VisibleEye style={styleProp} />
+				) : (
+					<HiddenEye style={styleProp} />
+				)}
 			</Pressable>
 		</>
 	);
