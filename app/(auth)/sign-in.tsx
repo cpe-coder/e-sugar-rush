@@ -1,24 +1,21 @@
 import Sugarcane from "@/assets/logo/sugarcane.png";
 import components from "@/components";
 import logo from "@/constant/logo";
-import Checkbox from "expo-checkbox";
-import { Redirect } from "expo-router";
 import React, { useState } from "react";
 import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const SignIn = () => {
-	const [isChecked, setIsChecked] = useState(false);
-	const [isPressed, setIsPressed] = useState(false);
-	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleChangeEmail = (e: any) => {
+	const handleChangeUsername = (e: any) => {
 		e.nativeEvent.text;
 
 		const value = e.target.value;
 
-		setEmail(value);
+		setUsername(value);
 	};
+
 	const handleChangePassword = (e: any) => {
 		e.nativeEvent.text;
 
@@ -27,17 +24,15 @@ const SignIn = () => {
 		setPassword(value);
 	};
 
-	const handlePressed = () => {
-		setIsPressed(true);
-	};
-
 	const handleLogin = () => {
-		console.log(email);
+		if (username && password) {
+			const data = {
+				username,
+				password,
+			};
+			console.log("This is data", data);
+		}
 	};
-
-	if (isPressed) {
-		return <Redirect href={"/sign-up"} />;
-	}
 
 	return (
 		<SafeAreaView className="bg-primary h-full">
@@ -56,10 +51,10 @@ const SignIn = () => {
 						</Text>
 						<View className="flex-col w-full px-6 gap-8 justify-center items-center">
 							<components.CustomInput
-								value={email}
-								onChange={handleChangeEmail}
-								placeholder="Email"
-								inputMode="email"
+								value={username}
+								onChange={handleChangeUsername}
+								placeholder="Username"
+								inputMode="text"
 							/>
 							<components.PasswordInput
 								value={password}
@@ -70,19 +65,7 @@ const SignIn = () => {
 							/>
 						</View>
 
-						<View className="flex-row w-full py-4 justify-between px-6 ">
-							<View className="flex-row gap-2 items-start">
-								<Checkbox
-									onValueChange={setIsChecked}
-									color={isChecked ? "#de9b00" : undefined}
-									value={isChecked}
-								/>
-
-								<Text className="text-white">Remember Me</Text>
-							</View>
-						</View>
-
-						<View className="first-letter:justify-center w-full px-6 mt-8 mb-6">
+						<View className="first-letter:justify-center w-full px-6 mt-14 mb-6">
 							<components.CustomButton
 								text="LOGIN"
 								onPress={handleLogin}
