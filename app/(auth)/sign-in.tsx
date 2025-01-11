@@ -4,14 +4,7 @@ import logo from "@/constant/logo";
 import Checkbox from "expo-checkbox";
 import { Redirect } from "expo-router";
 import React, { useState } from "react";
-import {
-	Dimensions,
-	Image,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const SignIn = () => {
 	const [isChecked, setIsChecked] = useState(false);
@@ -87,24 +80,13 @@ const SignIn = () => {
 
 								<Text className="text-white">Remember Me</Text>
 							</View>
-							<View>
-								<TouchableOpacity>
-									<Text className="italic text-white ">Forgot Password?</Text>
-								</TouchableOpacity>
-							</View>
 						</View>
 
-						<View className="flex-row  justify-between w-full px-6 mt-8 mb-6">
-							<components.CustomButton
-								text="CREATE ACCOUNT"
-								onPress={handlePressed}
-								style="border-2 px-4 border-yellow "
-								textStyle="text-white"
-							/>
+						<View className="first-letter:justify-center w-full px-6 mt-8 mb-6">
 							<components.CustomButton
 								text="LOGIN"
 								onPress={handleLogin}
-								style="bg-yellow w-28"
+								style="bg-yellow"
 								textStyle="text-black"
 							/>
 						</View>
