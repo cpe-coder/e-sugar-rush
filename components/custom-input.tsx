@@ -1,9 +1,5 @@
 import React from "react";
-import {
-	NativeSyntheticEvent,
-	TextInput,
-	TextInputChangeEventData,
-} from "react-native";
+import { TextInput } from "react-native";
 
 const CustomInput = ({
 	placeholder,
@@ -14,7 +10,7 @@ const CustomInput = ({
 	placeholder: string;
 	inputMode: any;
 	value: string;
-	onChange: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void;
+	onChange: (eventValue: string) => void;
 }) => {
 	return (
 		<TextInput
@@ -22,7 +18,7 @@ const CustomInput = ({
 			enablesReturnKeyAutomatically
 			autoCapitalize="none"
 			value={value}
-			onChange={onChange}
+			onChangeText={onChange}
 			inputMode={inputMode}
 			placeholder={placeholder}
 			className="bg-white text-gray-500 border-gray-300 border-2 w-full px-4 py-4 rounded-xl"

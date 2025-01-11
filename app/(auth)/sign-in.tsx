@@ -8,20 +8,12 @@ const SignIn = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleChangeUsername = (e: any) => {
-		e.nativeEvent.text;
-
-		const value = e.target.value;
-
-		setUsername(value);
+	const handleChangeUsername = (eventValue: any) => {
+		setUsername(eventValue);
 	};
 
-	const handleChangePassword = (e: any) => {
-		e.nativeEvent.text;
-
-		const value = e.target.value;
-
-		setPassword(value);
+	const handleChangePassword = (eventValue: any) => {
+		setPassword(eventValue);
 	};
 
 	const handleLogin = () => {

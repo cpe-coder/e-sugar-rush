@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-	NativeSyntheticEvent,
-	Pressable,
-	TextInput,
-	TextInputChangeEventData,
-} from "react-native";
+import { Pressable, TextInput } from "react-native";
 import HiddenEye from "./hidden-eye";
 import VisibleEye from "./visible-eye";
 
@@ -19,7 +14,7 @@ const PasswordInput = ({
 	placeholder: string;
 	inputMode: any;
 	value: string;
-	onChange: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void;
+	onChange: (eventValue: string) => void;
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -35,7 +30,7 @@ const PasswordInput = ({
 				enablesReturnKeyAutomatically
 				autoCapitalize="none"
 				value={value}
-				onChange={onChange}
+				onChangeText={onChange}
 				inputMode={inputMode}
 				placeholder={placeholder}
 				className="bg-white text-gray-500 relative border-gray-300 border-2 w-full px-4 py-4 rounded-xl"
