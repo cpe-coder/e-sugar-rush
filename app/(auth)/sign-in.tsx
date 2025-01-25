@@ -98,9 +98,13 @@ const SignIn = () => {
 							/>
 						</View>
 
-						<View className="first-letter:justify-center w-full px-6 mt-14 mb-6">
+						<View
+							className={`first-letter:justify-center w-full px-6 mt-14 mb-6 ${
+								disabled ? "opacity-50" : ""
+							}`}
+						>
 							<components.CustomButton
-								text={!loading ? "Loading..." : "Login"}
+								text={loading ? "Loading..." : "Login"}
 								onDisabled={disabled}
 								onPress={handleLogin}
 								style="bg-yellow"
