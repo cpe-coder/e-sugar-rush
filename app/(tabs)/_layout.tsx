@@ -1,3 +1,5 @@
+import components from "@/components";
+import icons from "@/constant/icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
@@ -8,12 +10,13 @@ const TabsLayout = () => {
 				screenOptions={{
 					headerShadowVisible: false,
 					tabBarShowLabel: false,
-					tabBarActiveTintColor: "#ff5757",
-					tabBarInactiveTintColor: "#CDCDE0",
+					tabBarActiveTintColor: "#FFCA08",
+					tabBarInactiveTintColor: "#fff",
 					tabBarStyle: {
-						backgroundColor: "#161622",
-						borderTopColor: "#232533",
-						height: 84,
+						backgroundColor: "#024f8e",
+						// borderTopColor: "#232533",
+						shadowColor: "#5c5b59",
+						height: 80,
 					},
 				}}
 			>
@@ -21,24 +24,56 @@ const TabsLayout = () => {
 					name="home"
 					options={{
 						headerShown: false,
+						tabBarIcon: ({ color, focused }) => (
+							<components.TabsIcon
+								icon={icons.Home}
+								name="HOME"
+								focused={focused}
+								color={color}
+							/>
+						),
 					}}
 				/>
 				<Tabs.Screen
 					name="control"
 					options={{
 						headerShown: false,
+						tabBarIcon: ({ color, focused }) => (
+							<components.TabsIcon
+								icon={icons.Control}
+								name="CONTROL"
+								focused={focused}
+								color={color}
+							/>
+						),
 					}}
 				/>
 				<Tabs.Screen
 					name="stat"
 					options={{
 						headerShown: false,
+						tabBarIcon: ({ color, focused }) => (
+							<components.TabsIcon
+								icon={icons.Stat}
+								name="STATS"
+								focused={focused}
+								color={color}
+							/>
+						),
 					}}
 				/>
 				<Tabs.Screen
 					name="setting"
 					options={{
 						headerShown: false,
+						tabBarIcon: ({ color, focused }) => (
+							<components.TabsIcon
+								icon={icons.Setting}
+								name="SETTINGS"
+								focused={focused}
+								color={color}
+							/>
+						),
 					}}
 				/>
 			</Tabs>

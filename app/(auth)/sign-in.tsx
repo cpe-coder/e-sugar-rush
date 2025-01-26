@@ -45,24 +45,26 @@ const SignIn = () => {
 			password,
 		};
 		try {
-			axios.post("http://localhost:3000/auth/login", data).then((res) => {
-				if (res.data.status === "ok") {
-					console.log({ message: "Login successful", data: res.data });
-					setUsername("");
-					setPassword("");
-					setLoading(false);
-					setDisabled(true);
-					setSuccess(true);
-				} else {
-					setLoading(false);
-					setDisabled(true);
-					setUsername("");
-					setPassword("");
-					setError(true);
-					setSuccess(false);
-					console.log({ message: "Login failed", data: res.data });
-				}
-			});
+			axios
+				.post("https://e-sugar-rush-server.vercel.app/auth/login", data)
+				.then((res) => {
+					if (res.data.status === "ok") {
+						console.log({ message: "Login successful", data: res.data });
+						setUsername("");
+						setPassword("");
+						setLoading(false);
+						setDisabled(true);
+						setSuccess(true);
+					} else {
+						setLoading(false);
+						setDisabled(true);
+						setUsername("");
+						setPassword("");
+						setError(true);
+						setSuccess(false);
+						console.log({ message: "Login failed", data: res.data });
+					}
+				});
 		} catch (error) {
 			setLoading(false);
 			setDisabled(true);
