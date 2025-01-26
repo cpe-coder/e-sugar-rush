@@ -7,7 +7,7 @@ const Home = () => {
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView>
-				<View className="justify-center items-center border-gray-300 border rounded-3xl ">
+				<View className="justify-center items-center border-gray-300 bg-primary3 border rounded-3xl ">
 					<Image
 						className="w-44 h-44 -mr-[83px] -mb-4  mt-2"
 						resizeMode="contain"
