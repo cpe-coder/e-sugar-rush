@@ -102,8 +102,12 @@ const SignIn = () => {
 						</Text>
 					</View>
 					<View className="w-full border flex-col blur-md items-center backdrop-blur-sm  pb-8 border-gray-300 bg-backdrop rounded-3xl -mt-12">
-						<Image source={logo.EsugarLogo} resizeMode="contain" />
-						<Text className="-mt-5 mb-10 text-xl text-white">
+						<Image
+							className="mt-12"
+							source={logo.EsugarLogo}
+							resizeMode="contain"
+						/>
+						<Text className="py-8 text-xl text-white">
 							Hello, log in to your profile
 						</Text>
 						<View className="flex-col w-full px-6 gap-8 justify-center items-center">
