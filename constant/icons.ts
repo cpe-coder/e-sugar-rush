@@ -1,3 +1,5 @@
+import Bell from "@/assets/icons/bell.png";
+import Boy from "@/assets/icons/boy.png";
 import ClosedEye from "@/assets/icons/closedeye.png";
 import Control from "@/assets/icons/control.png";
 import Eye from "@/assets/icons/eye.png";
@@ -12,6 +14,8 @@ const icons = {
 	Control,
 	Stat,
 	Setting,
+	Bell,
+	Boy,
 };
 
 export default icons;

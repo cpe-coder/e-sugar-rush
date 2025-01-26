@@ -1,3 +1,4 @@
+import components from "@/components";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -23,7 +24,22 @@ export default function RootLayout() {
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
 			<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+			<Stack.Screen
+				name="(tabs)"
+				options={{
+					headerTitle: () => {
+						return <components.TabsHeader.HeaderTitle />;
+					},
+					headerRight: () => {
+						return <components.TabsHeader.HeaderRight />;
+					},
+					headerTintColor: "#000",
+					headerShadowVisible: false,
+					headerStyle: {
+						backgroundColor: "#024f8e",
+					},
+				}}
+			/>
 		</Stack>
 	);
 }

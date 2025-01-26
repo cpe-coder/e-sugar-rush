@@ -2,6 +2,7 @@ import CustomButton from "@/components/custom-button";
 import CustomInput from "@/components/custom-input";
 import PasswordInput from "@/components/password-input";
 import HiddenEye from "./hidden-eye";
+import TabsHeader from "./tabs-header";
 import TabsIcon from "./tabs-icon";
 import VisibleEye from "./visible-eye";
 
@@ -12,6 +13,7 @@ const components = {
 	HiddenEye,
 	VisibleEye,
 	TabsIcon,
+	TabsHeader,
 };
 
 export default components;
