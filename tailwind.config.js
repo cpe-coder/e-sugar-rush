@@ -10,6 +10,7 @@ module.exports = {
 				backdrop: "#014c8a",
 				primary2: "#0262a1",
 				yellow: "#FFCA08",
+				textColor: "#024f8e",
 			},
 		},
 	},
