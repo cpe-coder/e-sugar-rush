@@ -36,7 +36,7 @@ export default function RootLayout() {
 					headerTintColor: "#000",
 					headerShadowVisible: false,
 					headerStyle: {
-						backgroundColor: "#024f8e",
+						backgroundColor: "#015d9c",
 					},
 				}}
 			/>

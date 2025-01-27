@@ -21,11 +21,8 @@ const Stat = () => {
 						<Text className="text-center pt-6 pb-4 text-white text-lg">
 							STATISTICS AND ANALYTICS
 						</Text>
-						<Text className="text-slate-200 font-normal pb-2 text-center">
-							Filtered Juice
-						</Text>
 						<View className="flex-row justify-evenly items-center">
-							<View className="w-52 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
+							<View className="w-52 h-[200px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
 									style={{ height: `${mainStorageHeight}%` }}
 									className="absolute bottom-0 w-full bg-lightYellow"
@@ -40,7 +37,7 @@ const Stat = () => {
 									Main Juice Storage
 								</Text>
 							</View>
-							<View className="w-28 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
+							<View className="w-24 h-[200px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
 									style={{ height: `${juiceStorageHeight}%` }}
 									className="absolute bottom-0 w-full bg-yellowGreen"
@@ -55,6 +52,22 @@ const Stat = () => {
 								</Text>
 							</View>
 						</View>
+					</View>
+					<View className="w-full bg-white mb-4 mt-10 rounded-3xl py-3 justify-center items-center">
+						<Text className="text-primary font-bold text-xl text-center">
+							Remaining Time For Cooking
+						</Text>
+						<Text className="text-primary font-bold text-2xl text-center">
+							00:01:59
+						</Text>
+					</View>
+					<View className="w-full bg-primary3 rounded-3xl py-3 justify-center items-center">
+						<Text className="text-white font-bold text-xl text-center">
+							In Queue: Drying
+						</Text>
+						<Text className="text-white font-bold text-2xl text-center">
+							00:01:59
+						</Text>
 					</View>
 				</View>
 			</ScrollView>
