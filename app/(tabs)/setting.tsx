@@ -19,9 +19,11 @@ const Setting = () => {
 								resizeMode="contain"
 								source={icons.User}
 							/>
-							<Text className="text-xl font-medium text-white">
-								Edit Profile
-							</Text>
+							<TouchableOpacity>
+								<Text className="text-xl font-medium text-white">
+									Edit Profile
+								</Text>
+							</TouchableOpacity>
 						</View>
 						<View className="flex-row w-full justify-start items-center gap-10">
 							<Image
@@ -30,9 +32,11 @@ const Setting = () => {
 								resizeMode="contain"
 								source={icons.Security}
 							/>
-							<Text className="text-xl font-medium text-white">
-								Change Credentials
-							</Text>
+							<TouchableOpacity>
+								<Text className="text-xl font-medium text-white">
+									Change Credentials
+								</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 					<Text className="text-start mt-10 mb-4 text-white font-medium text-xl">
