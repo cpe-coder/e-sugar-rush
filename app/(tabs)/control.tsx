@@ -55,6 +55,33 @@ const Control = () => {
 								<Text className="text-white">Dry</Text>
 							</TouchableOpacity>
 						</View>
+						<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
+							<Text className="text-white text-3xl font-semibold">
+								50&#8451;
+							</Text>
+							<Text className="text-white text-3xl font-semibold">
+								Temperature
+							</Text>
+						</View>
+						<Text className="text-white text-xl text-center py-3">TIMER</Text>
+						<View className="w-full py-3 px-4 bg-lightYellow rounded-2xl justify-between items-center flex-row gap-3">
+							<Text className="text-white text-2xl font-semibold">Cooking</Text>
+							<Text className="text-white text-3xl font-semibold">
+								01:23:30
+							</Text>
+							<TouchableOpacity className=" px-6 text-lg text-white rounded-full border border-white">
+								<Text className="text-white font-medium">Set</Text>
+							</TouchableOpacity>
+						</View>
+						<View className="w-full py-3 px-4 mt-4 mb-4 bg-lightYellow rounded-2xl justify-between items-center flex-row gap-3">
+							<Text className="text-white text-2xl font-semibold">Cooking</Text>
+							<Text className="text-white text-3xl font-semibold">
+								01:23:30
+							</Text>
+							<TouchableOpacity className=" px-6 text-lg text-white rounded-full border border-white">
+								<Text className="text-white font-medium">Set</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</View>
 			</ScrollView>

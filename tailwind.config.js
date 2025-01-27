@@ -13,6 +13,8 @@ module.exports = {
 				yellow: "#FFCA08",
 				textColor: "#024f8e",
 				other: "#025d9d",
+				yellowGreen: "#aacc00",
+				lightYellow: "#ffca08",
 			},
 		},
 	},
