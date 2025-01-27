@@ -1,5 +1,6 @@
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
+import { Link } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
 
@@ -24,11 +25,13 @@ const HeaderRight = () => {
 				className="w-5 h-5"
 				source={icons.Bell}
 			/>
-			<Image
-				resizeMode="contain"
-				className="w-12 border border-gray-400 rounded-full p-2 h-12"
-				source={icons.Boy}
-			/>
+			<Link href={"/profile"}>
+				<Image
+					resizeMode="contain"
+					className="w-12 border border-gray-400 rounded-full p-2 h-12"
+					source={icons.Boy}
+				/>
+			</Link>
 		</View>
 	);
 };
