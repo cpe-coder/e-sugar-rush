@@ -4,14 +4,13 @@ import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stat = () => {
-	const extractedJuice = 10;
-	const filteredJuice = 5;
-	const sugarVolume = 8;
-	const maxWaterLevel = 20;
+	const juiceStorage = 1;
+	const mainStorage = 12;
+	const maxMainStorage = 15;
+	const maxJuiceStorage = 5;
 
-	const extractedJuiceHeight = (extractedJuice / maxWaterLevel) * 100;
-	const filteredJuiceHeight = (filteredJuice / maxWaterLevel) * 100;
-	const sugarVolumeHeight = (sugarVolume / maxWaterLevel) * 100;
+	const juiceStorageHeight = (juiceStorage / maxJuiceStorage) * 100;
+	const mainStorageHeight = (mainStorage / maxMainStorage) * 100;
 
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
@@ -19,51 +18,40 @@ const Stat = () => {
 				<View className="items-center justify-center">
 					<Image resizeMode="contain" source={logo.Sugarcane} />
 					<View className="rounded-3xl border -mt-[160px] border-gray-300 bg-primary3 px-2 w-full pb-10">
-						<Text className="text-center py-6 text-white text-lg">
+						<Text className="text-center pt-6 pb-4 text-white text-lg">
 							STATISTICS AND ANALYTICS
 						</Text>
+						<Text className="text-slate-200 font-normal pb-2 text-center">
+							Filtered Juice
+						</Text>
 						<View className="flex-row justify-evenly items-center">
-							<View className="w-24 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
+							<View className="w-52 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
-									style={{ height: `${extractedJuiceHeight}%` }}
+									style={{ height: `${mainStorageHeight}%` }}
 									className="absolute bottom-0 w-full bg-lightYellow"
 								/>
 
 								<Text className="absolute bottom-4 mt-6 w-full text-center text-white text-lg font-bold">
-									{extractedJuice} L
+									{mainStorage} L
 								</Text>
 							</View>
-							<View className="items-center justify-center">
+							<View className="items-center justify-center backdrop-blur-sm">
 								<Text className="text-white absolute -rotate-90">
-									Level of Juice Extracted
+									Main Juice Storage
 								</Text>
 							</View>
-							<View className="w-24 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
+							<View className="w-28 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
-									style={{ height: `${filteredJuiceHeight}%` }}
+									style={{ height: `${juiceStorageHeight}%` }}
 									className="absolute bottom-0 w-full bg-yellowGreen"
 								/>
 								<Text className="absolute bottom-4 mt-6 w-full text-center text-white text-lg font-bold">
-									{filteredJuice} L
+									{juiceStorage} L
 								</Text>
 							</View>
 							<View className="items-center justify-center">
 								<Text className="text-white absolute -rotate-90">
-									Filtered Juice
-								</Text>
-							</View>
-							<View className="w-24 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
-								<View
-									style={{ height: `${sugarVolumeHeight}%` }}
-									className="absolute bottom-0 w-full bg-brown"
-								/>
-								<Text className="absolute bottom-4 mt-6 w-full text-center text-white text-lg font-bold">
-									{sugarVolume} L
-								</Text>
-							</View>
-							<View className="items-center justify-center">
-								<Text className="text-white absolute -rotate-90">
-									Muscovado Sugar Volume
+									Juice Storage
 								</Text>
 							</View>
 						</View>
