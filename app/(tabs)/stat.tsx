@@ -3,10 +3,6 @@ import React from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const firstContainerText = ["Level of Juice Extract"];
-const secondText = ["Filtered Juice"];
-const thirdText = ["Muscovado Sugar Volume"];
-
 const Stat = () => {
 	const extractedJuice = 10;
 	const filteredJuice = 5;
@@ -16,9 +12,6 @@ const Stat = () => {
 	const extractedJuiceHeight = (extractedJuice / maxWaterLevel) * 100;
 	const filteredJuiceHeight = (filteredJuice / maxWaterLevel) * 100;
 	const sugarVolumeHeight = (sugarVolume / maxWaterLevel) * 100;
-
-	Array.from(firstContainerText);
-	Object.assign({}, firstContainerText);
 
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
@@ -41,7 +34,9 @@ const Stat = () => {
 								</Text>
 							</View>
 							<View className="items-center justify-center">
-								{firstContainerText}
+								<Text className="text-white absolute -rotate-90">
+									Level of Juice Extracted
+								</Text>
 							</View>
 							<View className="w-24 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
@@ -53,7 +48,9 @@ const Stat = () => {
 								</Text>
 							</View>
 							<View className="items-center justify-center">
-								<Text className="text-white -rotate-90">L</Text>
+								<Text className="text-white absolute -rotate-90">
+									Filtered Juice
+								</Text>
 							</View>
 							<View className="w-24 h-[216px] bg-gray-300 rounded-3xl border-8 border-gray-300 overflow-hidden relative">
 								<View
@@ -65,7 +62,9 @@ const Stat = () => {
 								</Text>
 							</View>
 							<View className="items-center justify-center">
-								<Text className="text-white -rotate-90">L</Text>
+								<Text className="text-white absolute -rotate-90">
+									Muscovado Sugar Volume
+								</Text>
 							</View>
 						</View>
 					</View>
