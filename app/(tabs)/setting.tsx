@@ -1,9 +1,39 @@
 import icons from "@/constant/icons";
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Redirect } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Setting = () => {
+	const handleOnPress = async () => {
+		await AsyncStorage.removeItem("token");
+		console.log("Token removed");
+	};
+
+	const [redirectTo, setRedirectTo] = useState(false); // State to determine where to redirect
+
+	useEffect(() => {
+		const fetchToken = async () => {
+			try {
+				const token = await AsyncStorage.getItem("token");
+				console.log("Token:", token);
+				if (!token) {
+					setRedirectTo(true);
+				}
+			} catch (error) {
+				console.error("Error fetching token:", error);
+			}
+		};
+
+		setTimeout(() => {
+			fetchToken();
+		}, 3000);
+	}, []);
+
+	if (redirectTo) {
+		return <Redirect href={"/sign-in"} />;
+	}
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView>
@@ -49,7 +79,7 @@ const Setting = () => {
 							resizeMode="contain"
 							source={icons.Exit}
 						/>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={handleOnPress}>
 							<Text className="text-xl font-medium text-white">Log out</Text>
 						</TouchableOpacity>
 					</View>

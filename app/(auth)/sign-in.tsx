@@ -47,25 +47,27 @@ const SignIn = () => {
 			password,
 		};
 		try {
-			axios.post("http://192.168.43.4:8000/auth/login", data).then((res) => {
-				if (res.data.status === "ok") {
-					console.log({ message: "Login successful", data: res.data });
-					setUsername("");
-					setPassword("");
-					setLoading(false);
-					setDisabled(true);
-					setSuccess(true);
-					AsyncStorage.setItem("token", res.data.data);
-				} else {
-					setLoading(false);
-					setDisabled(true);
-					setUsername("");
-					setPassword("");
-					setError(true);
-					setErrorMessage(res.data.data);
-					console.log({ message: "Login failed", data: res.data });
-				}
-			});
+			axios
+				.post("http://192.168.43.4:8000/auth/login", data)
+				.then(async (res) => {
+					if (res.data.status === "ok") {
+						console.log({ message: "Login successful", data: res.data });
+						setUsername("");
+						setPassword("");
+						setLoading(false);
+						setDisabled(true);
+						setSuccess(true);
+						await AsyncStorage.setItem("token", res.data.token);
+					} else {
+						setLoading(false);
+						setDisabled(true);
+						setUsername("");
+						setPassword("");
+						setError(true);
+						setErrorMessage(res.data.data);
+						console.log({ message: "Login failed", data: res.data });
+					}
+				});
 		} catch (error) {
 			setLoading(false);
 			setDisabled(true);

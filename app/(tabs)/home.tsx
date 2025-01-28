@@ -11,7 +11,7 @@ const Home = () => {
 		const fetchToken = async () => {
 			const token = await AsyncStorage.getItem("token");
 			console.log(token);
-			if (!token) {
+			if (token === null) {
 				return <Redirect href={"/sign-in"} />;
 			}
 			try {
