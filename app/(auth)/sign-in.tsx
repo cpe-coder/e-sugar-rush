@@ -50,14 +50,15 @@ const SignIn = () => {
 			axios
 				.post("http://192.168.43.4:8000/auth/login", data)
 				.then(async (res) => {
+					console.log({ data: res.data });
 					if (res.data.status === "ok") {
-						console.log({ message: "Login successful", data: res.data });
+						const token = res.data.data;
 						setUsername("");
 						setPassword("");
 						setLoading(false);
 						setDisabled(true);
 						setSuccess(true);
-						await AsyncStorage.setItem("token", res.data.token);
+						await AsyncStorage.setItem("token", token);
 					} else {
 						setLoading(false);
 						setDisabled(true);
@@ -65,7 +66,7 @@ const SignIn = () => {
 						setPassword("");
 						setError(true);
 						setErrorMessage(res.data.data);
-						console.log({ message: "Login failed", data: res.data });
+						console.log({ data: res.data });
 					}
 				});
 		} catch (error) {

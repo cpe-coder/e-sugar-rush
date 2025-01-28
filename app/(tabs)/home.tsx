@@ -1,33 +1,27 @@
 import logo from "@/constant/logo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { Redirect } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
 	useEffect(() => {
-		const fetchToken = async () => {
+		const verifyToken = async () => {
 			const token = await AsyncStorage.getItem("token");
 			console.log(token);
-			if (token === null) {
-				return <Redirect href={"/sign-in"} />;
-			}
-			try {
-				await axios
-					.post("http://192.168.43.4:8000/auth/verification", token)
-					.then((res) => {
-						if (res.data.status === "ok") {
-							console.log("User verified");
-						}
-					});
-			} catch (error) {
-				console.log({ error: error });
-			}
+			await axios
+				.post("http://192.168.43.4:8000/userdata", { token: token })
+				.then((res) => {
+					console.log(res.data);
+					console.log("Token Verified");
+				})
+				.catch((error) => {
+					console.log("Not Verified", { error });
+				});
 		};
 
-		fetchToken();
+		verifyToken();
 	}, []);
 
 	return (

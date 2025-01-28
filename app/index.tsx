@@ -1,5 +1,6 @@
 import logo from "@/constant/logo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
@@ -8,25 +9,28 @@ export default function Index() {
 	const [redirectTo, setRedirectTo] = useState<string | null>(null); // State to determine where to redirect
 
 	useEffect(() => {
-		const fetchToken = async () => {
+		const verifyToken = async () => {
 			try {
 				const token = await AsyncStorage.getItem("token");
-				console.log("Token:", token);
-
-				// Set the redirection based on token existence
-				if (token) {
-					setRedirectTo("/home");
-				} else {
+				console.log(token);
+				if (!token) {
 					setRedirectTo("/sign-in");
+					return;
 				}
+				await axios
+					.post("http://192.168.43.4:8000/userdata", { token: token })
+					.then(async (res) => {
+						console.log("Token Verified");
+						setRedirectTo("/home");
+						console.log(res.data.data);
+					});
 			} catch (error) {
-				console.error("Error fetching token:", error);
-				setRedirectTo("/sign-in"); // Fallback in case of error
+				console.error("Error verifying token:", error);
+				setRedirectTo("/sign-in");
 			}
 		};
-
 		setTimeout(() => {
-			fetchToken();
+			verifyToken();
 		}, 3000);
 	}, []);
 
