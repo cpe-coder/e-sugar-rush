@@ -47,7 +47,7 @@ const SignIn = () => {
 			password,
 		};
 		try {
-			axios.post("http://localhost:8000/auth/login", data).then(async (res) => {
+			axios.post("http://192.168.43.4:8000/auth/login", data).then((res) => {
 				if (res.data.status === "ok") {
 					console.log({ message: "Login successful", data: res.data });
 					setUsername("");
@@ -55,14 +55,13 @@ const SignIn = () => {
 					setLoading(false);
 					setDisabled(true);
 					setSuccess(true);
-					await AsyncStorage.setItem("token", res.data.token);
+					AsyncStorage.setItem("token", res.data.data);
 				} else {
 					setLoading(false);
 					setDisabled(true);
 					setUsername("");
 					setPassword("");
 					setError(true);
-					setSuccess(false);
 					setErrorMessage(res.data.data);
 					console.log({ message: "Login failed", data: res.data });
 				}
@@ -73,7 +72,6 @@ const SignIn = () => {
 			setUsername("");
 			setPassword("");
 			setError(true);
-			setSuccess(false);
 			setRequestError(true);
 			console.log({ message: "Login failed", data: error });
 		}
