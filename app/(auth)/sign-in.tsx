@@ -1,6 +1,7 @@
 import Sugarcane from "@/assets/logo/sugarcane.png";
 import components from "@/components";
 import logo from "@/constant/logo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Redirect } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -46,7 +47,7 @@ const SignIn = () => {
 			password,
 		};
 		try {
-			axios.post("/auth/login", data).then((res) => {
+			axios.post("http://localhost:8000/auth/login", data).then(async (res) => {
 				if (res.data.status === "ok") {
 					console.log({ message: "Login successful", data: res.data });
 					setUsername("");
@@ -54,6 +55,7 @@ const SignIn = () => {
 					setLoading(false);
 					setDisabled(true);
 					setSuccess(true);
+					await AsyncStorage.setItem("token", res.data.token);
 				} else {
 					setLoading(false);
 					setDisabled(true);
@@ -62,7 +64,6 @@ const SignIn = () => {
 					setError(true);
 					setSuccess(false);
 					setErrorMessage(res.data.data);
-					console.log(errorMessage);
 					console.log({ message: "Login failed", data: res.data });
 				}
 			});

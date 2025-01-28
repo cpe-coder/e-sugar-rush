@@ -1,9 +1,26 @@
 import logo from "@/constant/logo";
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
+	useEffect(() => {
+		const fetchToken = async () => {
+			const token = await AsyncStorage.getItem("token");
+			console.log(token);
+
+			// try {
+
+			// 	)
+			// } catch (error) {
+
+			// }
+		};
+
+		fetchToken();
+	}, []);
+
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView>
