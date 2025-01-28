@@ -13,6 +13,7 @@ const SignIn = () => {
 	const [loading, setLoading] = useState(false);
 	const [disabled, setDisabled] = useState(false);
 	const [error, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const [success, setSuccess] = useState(false);
 	const [requestError, setRequestError] = useState(false);
 
@@ -45,26 +46,26 @@ const SignIn = () => {
 			password,
 		};
 		try {
-			axios
-				.post("https://e-sugar-rush-server.vercel.app/auth/login", data)
-				.then((res) => {
-					if (res.data.status === "ok") {
-						console.log({ message: "Login successful", data: res.data });
-						setUsername("");
-						setPassword("");
-						setLoading(false);
-						setDisabled(true);
-						setSuccess(true);
-					} else {
-						setLoading(false);
-						setDisabled(true);
-						setUsername("");
-						setPassword("");
-						setError(true);
-						setSuccess(false);
-						console.log({ message: "Login failed", data: res.data });
-					}
-				});
+			axios.post("/auth/login", data).then((res) => {
+				if (res.data.status === "ok") {
+					console.log({ message: "Login successful", data: res.data });
+					setUsername("");
+					setPassword("");
+					setLoading(false);
+					setDisabled(true);
+					setSuccess(true);
+				} else {
+					setLoading(false);
+					setDisabled(true);
+					setUsername("");
+					setPassword("");
+					setError(true);
+					setSuccess(false);
+					setErrorMessage(res.data.data);
+					console.log(errorMessage);
+					console.log({ message: "Login failed", data: res.data });
+				}
+			});
 		} catch (error) {
 			setLoading(false);
 			setDisabled(true);
@@ -96,9 +97,7 @@ const SignIn = () => {
 							{requestError ? "Request Error!" : "Login Error!"}
 						</Text>
 						<Text className="text-red-500 text-base font-bold">
-							{requestError
-								? "Please check your internet connection"
-								: "Invalid username or password"}
+							{errorMessage}
 						</Text>
 					</View>
 					<View className="w-full border flex-col blur-md items-center backdrop-blur-sm  pb-8 border-gray-300 bg-backdrop rounded-3xl -mt-12">
