@@ -1,6 +1,7 @@
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 
 const HeaderTitle = () => {
@@ -16,6 +17,17 @@ const HeaderTitle = () => {
 };
 
 const HeaderRight = () => {
+	const [image, setImage] = useState("");
+
+	useEffect(() => {
+		const fetchImage = async () => {
+			const result = await AsyncStorage.getItem("image");
+			console.log("Image from header", result);
+			setImage(result || "");
+		};
+
+		fetchImage();
+	});
 	return (
 		<View className="flex-row justify-center gap-4 items-center">
 			<Image
@@ -28,7 +40,7 @@ const HeaderRight = () => {
 				<Image
 					resizeMode="contain"
 					className="w-12 border border-gray-400 rounded-full p-2 h-12"
-					source={icons.Profile}
+					source={image == "" ? icons.Profile : image}
 				/>
 			</TouchableOpacity>
 		</View>

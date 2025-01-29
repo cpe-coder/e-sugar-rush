@@ -15,9 +15,9 @@ const ProfileModal = ({ Style, components }: Props) => {
 
 	useEffect(() => {
 		const fetchImage = async () => {
-			const image = await AsyncStorage.getItem("image");
-			console.log("Image from async", image);
-			setImage(image || "");
+			const result = await AsyncStorage.getItem("image");
+			console.log("Image from async", result);
+			setImage(result || "");
 		};
 
 		fetchImage();
