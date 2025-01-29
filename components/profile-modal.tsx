@@ -1,6 +1,8 @@
+import icons from "@/constant/icons";
 import logo from "@/constant/logo";
-import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { launchImageLibraryAsync } from "expo-image-picker";
+import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
@@ -9,19 +11,29 @@ interface Props {
 }
 
 const ProfileModal = ({ Style, components }: Props) => {
-	const [image, setImage] = useState<string | null>(null);
+	const [image, setImage] = useState("");
+
+	useEffect(() => {
+		const fetchImage = async () => {
+			const image = await AsyncStorage.getItem("image");
+			console.log("Image from async", image);
+			setImage(image || "");
+		};
+
+		fetchImage();
+	});
 
 	const pickImage = async () => {
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+		let result = await launchImageLibraryAsync({
+			mediaTypes: "livePhotos",
 			allowsEditing: true,
 			aspect: [4, 3],
 		});
 
-		console.log(result);
+		console.log(result.assets);
 
 		if (!result.canceled) {
-			setImage(result.assets[0].uri);
+			await AsyncStorage.setItem("image", result.assets[0].uri);
 		}
 	};
 
@@ -32,14 +44,22 @@ const ProfileModal = ({ Style, components }: Props) => {
 			</View>
 			<Image source={logo.Sugarcane} className="top-2" />
 			<View className="absolute w-full justify-center top-[160px] z-[1000px] items-center">
-				<TouchableOpacity onPress={pickImage}>
-					{image && (
-						<Image
-							resizeMode="contain"
-							source={{ uri: image }}
-							className="rounded-full w-52 h-52"
-						/>
-					)}
+				<Image
+					resizeMode="contain"
+					source={!image ? icons.Profile : { uri: image }}
+					className={`rounded-full w-52 h-52 ${!image && "bg-gray-300"}`}
+				/>
+				<TouchableOpacity
+					onPress={pickImage}
+					className="absolute flex-row rounded-md border px-2 py-1 top-40 right-28 bg-primary3 border-gray-300 justify-center items-center gap-1"
+				>
+					<Image
+						resizeMode="contain"
+						tintColor={"#fff"}
+						className="  w-4 h-4"
+						source={icons.Pen}
+					/>
+					<Text className="text-white text-base">Edit</Text>
 				</TouchableOpacity>
 			</View>
 			<View className="py-14 px-8 bg-primary3 rounded-3xl border border-gray-300 absolute w-full top-[305px]">

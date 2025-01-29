@@ -10,6 +10,7 @@ import Eye from "@/assets/icons/eye.png";
 import Home from "@/assets/icons/home.png";
 import Pen from "@/assets/icons/pen.png";
 import Power from "@/assets/icons/power.png";
+import Profile from "@/assets/icons/profile.png";
 import Roller from "@/assets/icons/roller.png";
 import Security from "@/assets/icons/security.png";
 import Setting from "@/assets/icons/setting.png";
@@ -34,6 +35,7 @@ const icons = {
 	Security,
 	Pen,
 	Close,
+	Profile,
 };
 
 export default icons;

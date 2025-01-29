@@ -28,7 +28,7 @@ const HeaderRight = () => {
 				<Image
 					resizeMode="contain"
 					className="w-12 border border-gray-400 rounded-full p-2 h-12"
-					source={icons.Boy}
+					source={icons.Profile}
 				/>
 			</TouchableOpacity>
 		</View>
