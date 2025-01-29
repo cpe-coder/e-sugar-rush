@@ -16,7 +16,6 @@ const Setting = () => {
 
 	const handleModalClose = () => {
 		setVisible(false);
-		console.log("press");
 	};
 
 	const handleModalOpen = () => {
@@ -72,7 +71,7 @@ const Setting = () => {
 							/>
 							<TouchableOpacity>
 								<Text className="text-xl font-medium text-white">
-									Change Credentials
+									Update Credentials
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -91,7 +90,19 @@ const Setting = () => {
 							<Text className="text-xl font-medium text-white">Log out</Text>
 						</TouchableOpacity>
 					</View>
-					<ProfileModal Style={`${visible ? "absolute" : "hidden"}`} />
+					<ProfileModal
+						components={
+							<TouchableOpacity onPress={handleModalClose}>
+								<Image
+									source={icons.Close}
+									tintColor={"#fff"}
+									resizeMode="contain"
+									className="w-5 h-5"
+								/>
+							</TouchableOpacity>
+						}
+						Style={`${visible ? "absolute" : "hidden"}`}
+					/>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
