@@ -2,7 +2,7 @@ import icons from "@/constant/icons";
 import logo from "@/constant/logo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, View } from "react-native";
 
 const HeaderTitle = () => {
 	return (
@@ -36,13 +36,13 @@ const HeaderRight = () => {
 				className="w-5 h-5"
 				source={icons.Bell}
 			/>
-			<TouchableOpacity>
+			<View>
 				<Image
 					resizeMode="contain"
 					className="w-12 border border-gray-400 rounded-full p-2 h-12"
-					source={image == "" ? icons.Profile : image}
+					source={!image ? icons.Profile : { uri: image }}
 				/>
-			</TouchableOpacity>
+			</View>
 		</View>
 	);
 };

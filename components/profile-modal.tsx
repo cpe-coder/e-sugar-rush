@@ -1,6 +1,7 @@
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -12,13 +13,29 @@ interface Props {
 
 const ProfileModal = ({ Style, components }: Props) => {
 	const [image, setImage] = useState("");
+	const [data, setData] = useState([{}]);
 
 	useEffect(() => {
+		const getUserDetails = async () => {
+			try {
+				await axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
+					if (res.status == 200) {
+						setData(res.data.data);
+						console.log(res.data.data);
+					}
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
 		const fetchImage = async () => {
 			const result = await AsyncStorage.getItem("image");
 			console.log("Image from async", result);
 			setImage(result || "");
 		};
+
+		getUserDetails();
 
 		fetchImage();
 	});
@@ -27,7 +44,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 		let result = await launchImageLibraryAsync({
 			mediaTypes: "livePhotos",
 			allowsEditing: true,
-			aspect: [4, 3],
+			aspect: [5, 5],
 		});
 
 		console.log(result.assets);
