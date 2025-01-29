@@ -1,6 +1,7 @@
 import Bell from "@/assets/icons/bell.png";
 import Boil from "@/assets/icons/boil.png";
 import Boy from "@/assets/icons/boy.png";
+import Close from "@/assets/icons/close.png";
 import ClosedEye from "@/assets/icons/closedeye.png";
 import Control from "@/assets/icons/control.png";
 import Dry from "@/assets/icons/dry.png";
@@ -32,6 +33,7 @@ const icons = {
 	User,
 	Security,
 	Pen,
+	Close,
 };
 
 export default icons;

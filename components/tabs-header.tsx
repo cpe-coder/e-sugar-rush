@@ -1,11 +1,9 @@
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
-import React, { useState } from "react";
+import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 
 const HeaderTitle = () => {
-	const [visible, setVisible] = useState(false);
-
 	return (
 		<View className="flex-row justify-start">
 			<Image

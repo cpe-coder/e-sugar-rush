@@ -11,6 +11,16 @@ interface Props {
 const ProfileModal = ({ Style }: Props) => {
 	return (
 		<View className={`w-full ${Style}`}>
+			<View className="absolute w-full items-center top-1 left-[175px]">
+				<TouchableOpacity>
+					<Image
+						source={icons.Close}
+						tintColor={"#fff"}
+						resizeMode="contain"
+						className="w-5 h-5"
+					/>
+				</TouchableOpacity>
+			</View>
 			<Image source={logo.Sugarcane} className="top-2" />
 			<View className="absolute w-full justify-center top-[160px] z-[1000px] items-center">
 				<Image
