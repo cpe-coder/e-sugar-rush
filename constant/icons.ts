@@ -7,6 +7,7 @@ import Dry from "@/assets/icons/dry.png";
 import Exit from "@/assets/icons/exit.png";
 import Eye from "@/assets/icons/eye.png";
 import Home from "@/assets/icons/home.png";
+import Pen from "@/assets/icons/pen.png";
 import Power from "@/assets/icons/power.png";
 import Roller from "@/assets/icons/roller.png";
 import Security from "@/assets/icons/security.png";
@@ -30,6 +31,7 @@ const icons = {
 	Exit,
 	User,
 	Security,
+	Pen,
 };
 
 export default icons;

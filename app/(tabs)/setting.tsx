@@ -1,3 +1,4 @@
+import ProfileModal from "@/components/profile-modal";
 import icons from "@/constant/icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Redirect } from "expo-router";
@@ -6,12 +7,21 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Setting = () => {
+	const [redirectTo, setRedirectTo] = useState(false);
+	const [visible, setVisible] = useState(false);
 	const handleOnPress = async () => {
 		await AsyncStorage.removeItem("token");
 		console.log("Token removed");
 	};
 
-	const [redirectTo, setRedirectTo] = useState(false); // State to determine where to redirect
+	const handleModalClose = () => {
+		setVisible(false);
+		console.log("press");
+	};
+
+	const handleModalOpen = () => {
+		setVisible(true);
+	};
 
 	useEffect(() => {
 		const fetchToken = async () => {
@@ -37,8 +47,8 @@ const Setting = () => {
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView>
-				<View className="justify-center items-start">
-					<Text className="text-start mb-4 text-white font-medium text-xl">
+				<View className="justify-center items-center">
+					<Text className="text-start mb-4 text-white font-medium w-full text-xl">
 						Account
 					</Text>
 					<View className=" w-full justify-center items-center bg-primary3 border gap-5 border-gray-300 rounded-3xl py-8 px-10">
@@ -49,10 +59,8 @@ const Setting = () => {
 								resizeMode="contain"
 								source={icons.User}
 							/>
-							<TouchableOpacity>
-								<Text className="text-xl font-medium text-white">
-									Edit Profile
-								</Text>
+							<TouchableOpacity onPress={handleModalOpen}>
+								<Text className="text-xl font-medium text-white">Profile</Text>
 							</TouchableOpacity>
 						</View>
 						<View className="flex-row w-full justify-start items-center gap-10">
@@ -69,7 +77,7 @@ const Setting = () => {
 							</TouchableOpacity>
 						</View>
 					</View>
-					<Text className="text-start mt-10 mb-4 text-white font-medium text-xl">
+					<Text className="text-start mt-10 mb-4 text-white font-medium w-full text-xl">
 						Action
 					</Text>
 					<View className="flex-row w-full justify-start items-center gap-10 bg-primary3 border border-gray-300 rounded-3xl py-8 px-10">
@@ -83,6 +91,7 @@ const Setting = () => {
 							<Text className="text-xl font-medium text-white">Log out</Text>
 						</TouchableOpacity>
 					</View>
+					<ProfileModal Style={`${visible ? "absolute" : "hidden"}`} />
 				</View>
 			</ScrollView>
 		</SafeAreaView>
