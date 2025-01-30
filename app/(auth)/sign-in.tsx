@@ -48,7 +48,7 @@ const SignIn = () => {
 		};
 		try {
 			axios
-				.post("http://192.168.43.4:8000/auth/login", data)
+				.post("https://e-sugar-rush-server.vercel.app/auth/login", data)
 				.then(async (res) => {
 					console.log({ data: res.data });
 					if (res.data.status === "ok") {

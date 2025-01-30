@@ -39,7 +39,7 @@ const Setting = () => {
 	};
 
 	const handleUpdateButton = async () => {
-		setLoading(true)
+		setLoading(true);
 		const formData = {
 			username: "owner",
 			firstName,
@@ -47,7 +47,7 @@ const Setting = () => {
 			address,
 		};
 		const response = await axios.post(
-			"http://192.168.43.4:8000/update",
+			"https://e-sugar-rush-server.vercel.app/update",
 			formData
 		);
 		if (response.status === 200) {

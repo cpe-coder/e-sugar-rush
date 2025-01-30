@@ -25,9 +25,11 @@ const ProfileModal = ({ Style, components }: Props) => {
 	}, []);
 
 	async function getData() {
-		axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
-			setUserData(res.data.data);
-		});
+		axios
+			.get("https://e-sugar-rush-server.vercel.app/get-all-user")
+			.then((res) => {
+				setUserData(res.data.data);
+			});
 	}
 
 	useEffect(() => {

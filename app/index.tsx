@@ -18,7 +18,9 @@ export default function Index() {
 					return;
 				}
 				await axios
-					.post("http://192.168.43.4:8000/userdata", { token: token })
+					.post("https://e-sugar-rush-server.vercel.app/userdata", {
+						token: token,
+					})
 					.then(async (res) => {
 						console.log("Token Verified");
 						setRedirectTo("/home");
