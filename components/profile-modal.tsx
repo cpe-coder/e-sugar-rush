@@ -30,7 +30,6 @@ const ProfileModal = ({ Style, components }: Props) => {
 				await axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
 					if (res.status == 200) {
 						setData(res.data.data);
-						console.log(res.data.data);
 					}
 				});
 			} catch (error) {
@@ -40,7 +39,6 @@ const ProfileModal = ({ Style, components }: Props) => {
 
 		const fetchImage = async () => {
 			const result = await AsyncStorage.getItem("image");
-			console.log("Image from async", result);
 			setImage(result || "");
 		};
 

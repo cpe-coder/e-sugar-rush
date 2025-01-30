@@ -30,7 +30,6 @@ const HeaderRight = () => {
 	useEffect(() => {
 		const fetchImage = async () => {
 			const result = await AsyncStorage.getItem("image");
-			console.log("Image from header", result);
 			setImage(result || "");
 		};
 

@@ -20,7 +20,6 @@ const Setting = () => {
 
 	const handleOnPress = async () => {
 		await AsyncStorage.removeItem("token");
-		console.log("Token removed");
 	};
 
 	const handleModalClose = () => {
@@ -44,7 +43,7 @@ const Setting = () => {
 		const fetchToken = async () => {
 			try {
 				const token = await AsyncStorage.getItem("token");
-				if (token === "") {
+				if (token?.length === 0) {
 					setRedirectTo(true);
 				}
 			} catch (error) {

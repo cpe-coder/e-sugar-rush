@@ -20,9 +20,7 @@ export default function Index() {
 				await axios
 					.post("http://192.168.43.4:8000/userdata", { token: token })
 					.then(async (res) => {
-						console.log("Token Verified");
 						setRedirectTo("/home");
-						console.log(res.data.data);
 					});
 			} catch (error) {
 				console.error("Error verifying token:", error);
