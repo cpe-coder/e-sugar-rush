@@ -1,9 +1,18 @@
 import logo from "@/constant/logo";
 import React from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stat = () => {
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
+
 	const juiceStorage = 1;
 	const mainStorage = 12;
 	const maxMainStorage = 15;
@@ -14,7 +23,11 @@ const Stat = () => {
 
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
-			<ScrollView>
+			<ScrollView
+				refreshControl={
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+				}
+			>
 				<View className="items-center justify-center">
 					<Image resizeMode="contain" source={logo.Sugarcane} />
 					<View className="rounded-3xl border -mt-[160px] border-gray-300 bg-primary3 px-2 w-full pb-10">

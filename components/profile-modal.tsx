@@ -15,6 +15,14 @@ const ProfileModal = ({ Style, components }: Props) => {
 	const [image, setImage] = useState("");
 	const [data, setData] = useState([{}]);
 	const [visible, setVisible] = useState(false);
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	useEffect(() => {
 		const getUserDetails = async () => {
@@ -37,7 +45,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 		};
 
 		getUserDetails();
-
+		onRefresh();
 		fetchImage();
 	});
 
@@ -64,7 +72,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 	};
 
 	return (
-		<View className={`w-full ${Style}`}>
+		<View className={`w-full top-16 justify-center items-center ${Style}`}>
 			<View className="absolute w-full items-center top-1 left-[175px]">
 				{components}
 			</View>

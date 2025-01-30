@@ -1,13 +1,32 @@
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
 import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+	Image,
+	RefreshControl,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Control = () => {
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
-			<ScrollView>
+			<ScrollView
+				refreshControl={
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+				}
+			>
 				<View className="justify-center items-center">
 					<Image source={logo.EsugarLogo} />
 					<View className="border border-gray-300 bg-primary3 rounded-3xl py-6 mt-10 px-8 w-full">
