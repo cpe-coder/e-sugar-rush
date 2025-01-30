@@ -14,6 +14,7 @@ interface Props {
 const ProfileModal = ({ Style, components }: Props) => {
 	const [image, setImage] = useState("");
 	const [data, setData] = useState([{}]);
+	const [visible, setVisible] = useState(false);
 
 	useEffect(() => {
 		const getUserDetails = async () => {
@@ -47,11 +48,19 @@ const ProfileModal = ({ Style, components }: Props) => {
 			aspect: [5, 5],
 		});
 
-		console.log(result.assets);
-
 		if (!result.canceled) {
 			await AsyncStorage.setItem("image", result.assets[0].uri);
 		}
+		setVisible(false);
+	};
+
+	const removeImage = async () => {
+		await AsyncStorage.removeItem("image");
+		setVisible(false);
+	};
+
+	const visibility = () => {
+		setVisible((prev) => !prev);
 	};
 
 	return (
@@ -61,13 +70,15 @@ const ProfileModal = ({ Style, components }: Props) => {
 			</View>
 			<Image source={logo.Sugarcane} className="top-2" />
 			<View className="absolute w-full justify-center top-[160px] z-[1000px] items-center">
-				<Image
-					resizeMode="contain"
-					source={!image ? icons.Profile : { uri: image }}
-					className={`rounded-full w-52 h-52 ${!image && "bg-gray-300"}`}
-				/>
+				<View className="rounded-full w-52 h-52 bg-gray-300">
+					<Image
+						resizeMode="contain"
+						source={!image ? icons.Profile : { uri: image }}
+						className="rounded-full w-52 h-52"
+					/>
+				</View>
 				<TouchableOpacity
-					onPress={pickImage}
+					onPress={visibility}
 					className="absolute flex-row rounded-md border px-2 py-1 top-40 right-28 bg-primary3 border-gray-300 justify-center items-center gap-1"
 				>
 					<Image
@@ -78,6 +89,23 @@ const ProfileModal = ({ Style, components }: Props) => {
 					/>
 					<Text className="text-white text-base">Edit</Text>
 				</TouchableOpacity>
+				<View
+					className={`right-[90px] top-52 ${visible ? "absolute" : "hidden"}`}
+				>
+					<View className="h-4 absolute z-50 rounded-sm -top-[6px] left-[135px] border-t border-l w-4 border-white bg-primary rotate-45"></View>
+					<View className="bg-primary border border-gray-300 flex rounded-xl items-start gap-3 py-4 px-6 w-48">
+						<TouchableOpacity onPress={pickImage}>
+							<Text className="text-white w-full text-left text-base">
+								Upload a photo...
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={removeImage}>
+							<Text className="text-white w-full text-left text-base">
+								Remove a photo
+							</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
 			</View>
 			<View className="py-14 px-8 bg-primary3 rounded-3xl border border-gray-300 absolute w-full top-[305px]">
 				<View className="flex-row justify-center mb-4 items-center gap-3">
