@@ -4,11 +4,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
 	Style: string;
 	components: React.ReactNode;
+}
+
+interface dataProps {
+	firstName: string;
+	lastName: string;
+	username: string;
+	address: string;
 }
 
 const ProfileModal = ({ Style, components }: Props) => {
@@ -16,6 +23,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 	const [data, setData] = useState([{}]);
 	const [visible, setVisible] = useState(false);
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [userData, setUserData] = useState("");
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -24,7 +32,15 @@ const ProfileModal = ({ Style, components }: Props) => {
 		}, 2000);
 	}, []);
 
+	async function getData() {
+		axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
+			setUserData(res.data.data);
+		});
+	}
+
 	useEffect(() => {
+		getData();
+
 		const getUserDetails = async () => {
 			try {
 				await axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
@@ -43,7 +59,6 @@ const ProfileModal = ({ Style, components }: Props) => {
 		};
 
 		getUserDetails();
-		onRefresh();
 		fetchImage();
 	});
 
@@ -69,11 +84,33 @@ const ProfileModal = ({ Style, components }: Props) => {
 		setVisible((prev) => !prev);
 	};
 
+	const renderItem = ({ item }) => {
+		return (
+			<>
+				<View className="flex-row justify-center mb-4 items-center gap-3">
+					<Text className="text-2xl font-bold text-white">
+						{item.firstName}
+					</Text>
+					<Text className="text-2xl text-white">{item.lastName}</Text>
+				</View>
+				<View className="flex-row w-full  mb-1 items-center gap-3">
+					<Text className="text-lg text-right text-white w-32">Username:</Text>
+					<Text className="text-lg text-left text-white">{item.username}</Text>
+				</View>
+				<View className="flex-row w-full items-center gap-3">
+					<Text className="text-lg text-right text-white w-32">Address:</Text>
+					<Text className="text-lg text-left text-wrap text-white">
+						{item.address}
+					</Text>
+				</View>
+			</>
+		);
+	};
+
 	return (
-		<View className={`w-full top-16 justify-center items-center ${Style}`}>
-			<View className="absolute w-full items-center top-1 left-[175px]">
-				{components}
-			</View>
+		<View
+			className={`w-full self-center top-24 justify-center items-center ${Style}`}
+		>
 			<Image source={logo.Sugarcane} className="top-2" />
 			<View className="absolute w-full justify-center top-[160px] z-[1000px] items-center">
 				<View className="rounded-full w-52 h-52 bg-gray-300">
@@ -113,21 +150,9 @@ const ProfileModal = ({ Style, components }: Props) => {
 					</View>
 				</View>
 			</View>
-			<View className="py-14 px-8 bg-primary3 rounded-3xl border border-gray-300 absolute w-full top-[305px]">
-				<View className="flex-row justify-center mb-4 items-center gap-3">
-					<Text className="text-2xl font-bold text-white">ANNE</Text>
-					<Text className="text-2xl text-white">BATUMBAKAL</Text>
-				</View>
-				<View className="flex-row w-full  mb-1 items-center gap-3">
-					<Text className="text-lg text-right text-white w-32">Username:</Text>
-					<Text className="text-lg text-left text-white">owner</Text>
-				</View>
-				<View className="flex-row w-full items-center gap-3">
-					<Text className="text-lg text-right text-white w-32">Address:</Text>
-					<Text className="text-lg text-left text-white">
-						Bongabong, Or. Mdo.
-					</Text>
-				</View>
+			<View className="py-14  bg-primary3 rounded-3xl border border-gray-300 absolute w-full top-[305px]">
+				<FlatList data={userData} renderItem={renderItem} />
+				{components}
 			</View>
 		</View>
 	);

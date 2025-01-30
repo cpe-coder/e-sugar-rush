@@ -23,7 +23,15 @@ export default function RootLayout() {
 	return (
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
-			<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+			<Stack.Screen
+				name="(auth)"
+				options={{
+					headerShown: false,
+					contentStyle: {
+						backgroundColor: "#015d9c",
+					},
+				}}
+			/>
 			<Stack.Screen
 				name="(tabs)"
 				options={{
@@ -33,9 +41,12 @@ export default function RootLayout() {
 					headerRight: () => {
 						return <components.TabsHeader.HeaderRight />;
 					},
-					headerTintColor: "#000",
+					// headerTintColor: "#000",
 					headerShadowVisible: false,
 					headerStyle: {
+						backgroundColor: "#015d9c",
+					},
+					contentStyle: {
 						backgroundColor: "#015d9c",
 					},
 				}}
