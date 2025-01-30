@@ -18,6 +18,14 @@ const HeaderTitle = () => {
 
 const HeaderRight = () => {
 	const [image, setImage] = useState("");
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
 
 	useEffect(() => {
 		const fetchImage = async () => {
@@ -27,6 +35,7 @@ const HeaderRight = () => {
 		};
 
 		fetchImage();
+		onRefresh();
 	});
 	return (
 		<View className="flex-row justify-center gap-4 items-center">
