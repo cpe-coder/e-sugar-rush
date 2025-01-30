@@ -20,12 +20,13 @@ const Setting = () => {
 	const [visible, setVisible] = useState(false);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [credentialsVisible, setCredentialsVisible] = useState(false);
-	const [username, setUsername] = React.useState("");
 	const [firstName, setFirstName] = React.useState("");
 	const [lastName, setLastName] = React.useState("");
 	const [address, setAddress] = React.useState("");
 	const [disable, setDisabe] = React.useState(false);
-	const [userData, setUserData] = React.useState("");
+	const [successMessage, setSuccessMessage] = React.useState("");
+	const [success, setSuccess] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 
 	const updateFirstName = (eventValue: string) => {
 		setFirstName(eventValue);
@@ -37,33 +38,41 @@ const Setting = () => {
 		setAddress(eventValue);
 	};
 
-	const handleUpdateButton = () => {
-		console.log(firstName);
-		console.log(lastName);
-		console.log(address);
+	const handleUpdateButton = async () => {
+		setLoading(true)
+		const formData = {
+			username: "owner",
+			firstName,
+			lastName,
+			address,
+		};
+		const response = await axios.post(
+			"http://192.168.43.4:8000/update",
+			formData
+		);
+		if (response.status === 200) {
+			setSuccess(true);
+			setLoading(false);
+			setFirstName("");
+			setLastName("");
+			setAddress("");
+			setSuccessMessage(response.data.data);
+		}
 	};
 
-	async function getData() {
-		axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
-			setUsername(res.data.data.username);
-			setUserData(res.data.data);
-			setFirstName(res.data.data.firstName);
-			setLastName(res.data.data.lastName);
-			setAddress(res.data.data.address);
-		});
-	}
-
 	React.useEffect(() => {
-		getData();
-
 		if (!firstName || !lastName || !address) {
 			setDisabe(true);
 		} else {
 			setDisabe(false);
 		}
-	}, []);
 
-	const handlePress = async () => {
+		if (!credentialsVisible) {
+			setLoading(false);
+		}
+	});
+
+	const handleLogoutPress = async () => {
 		await AsyncStorage.removeItem("token");
 		setTimeout(() => {
 			checkToken();
@@ -72,12 +81,15 @@ const Setting = () => {
 
 	const handleCloseUpdateCredentials = () => {
 		setCredentialsVisible(false);
+		setLoading(false);
+		setSuccess(false);
+		setLoading(credentialsVisible);
 		setFirstName("");
 		setLastName("");
 		setAddress("");
 	};
 
-	const credentiasVisibility = () => {
+	const credentialsVisibility = () => {
 		setCredentialsVisible((prev) => !prev);
 	};
 
@@ -141,7 +153,7 @@ const Setting = () => {
 								resizeMode="contain"
 								source={icons.Security}
 							/>
-							<TouchableOpacity onPress={credentiasVisibility}>
+							<TouchableOpacity onPress={credentialsVisibility}>
 								<Text className="text-xl font-medium text-white">
 									Update Credentials
 								</Text>
@@ -158,17 +170,18 @@ const Setting = () => {
 							resizeMode="contain"
 							source={icons.Exit}
 						/>
-						<TouchableOpacity onPress={handlePress}>
+						<TouchableOpacity onPress={handleLogoutPress}>
 							<Text className="text-xl font-medium text-white">Log out</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
+
 				<components.UpdateCredentials
 					actions={
 						<>
 							<TouchableOpacity
 								onPress={handleCloseUpdateCredentials}
-								className="bg-slate-700 rounded-lg py-2 px-4"
+								className=" border border-gray-300 rounded-lg py-2 px-4"
 							>
 								<Text className="text-white font-bold text-lg">Cancel</Text>
 							</TouchableOpacity>
@@ -176,10 +189,12 @@ const Setting = () => {
 								onPress={handleUpdateButton}
 								disabled={disable}
 								className={` rounded-lg py-2 px-6 ${
-									disable ? "bg-red-900" : "bg-red-700"
+									disable ? "bg-gray-500" : "bg-gray-300"
 								}`}
 							>
-								<Text className="text-white font-bold text-lg">Save</Text>
+								<Text className="text-white font-bold text-lg">
+									{loading ? "Saving..." : "Save"}
+								</Text>
 							</TouchableOpacity>
 						</>
 					}
@@ -223,7 +238,20 @@ const Setting = () => {
 					Style={credentialsVisible ? "absolute" : " hidden"}
 				/>
 			</ScrollView>
-
+			<View
+				className={`z-[2000px] bottom-5 self-center rounded-xl p-3 mt-2 bg-white border border-gray-300 text-center w-full justify-center items-center ${
+					success ? "absolute" : "hidden"
+				}`}
+			>
+				<View className="bg-green-500 absolute h-full w-1 left-3"></View>
+				<View className="bg-green-500 absolute h-full w-1 right-3"></View>
+				<Text className="text-green-700 text-lg font-bold">
+					{!success ? "Request Error!" : "Success"}
+				</Text>
+				<Text className="text-green-500 text-base font-bold">
+					{successMessage}
+				</Text>
+			</View>
 			<components.ProfileModal
 				components={
 					<TouchableOpacity
