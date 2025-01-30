@@ -91,10 +91,12 @@ const SignIn = () => {
 				>
 					<Image className="w-full" resizeMode="contain" source={Sugarcane} />
 					<View
-						className={` bg-white rounded-2xl p-3 text-center w-full justify-center items-center ${
+						className={` rounded-xl p-3 mt-2 bg-white border border-gray-300 text-center w-full justify-center items-center ${
 							error ? "absolute" : "hidden"
 						}`}
 					>
+						<View className="bg-red-500 absolute h-full w-1 left-3"></View>
+						<View className="bg-red-500 absolute h-full w-1 right-3"></View>
 						<Text className="text-red-700 text-lg font-bold">
 							{requestError ? "Request Error!" : "Login Error!"}
 						</Text>

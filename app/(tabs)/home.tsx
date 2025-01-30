@@ -1,7 +1,5 @@
 import logo from "@/constant/logo";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -14,24 +12,6 @@ const Home = () => {
 			setRefreshing(false);
 		}, 2000);
 	}, []);
-	useEffect(() => {
-		const verifyToken = async () => {
-			const token = await AsyncStorage.getItem("token");
-			console.log(token);
-			await axios
-				.post("http://192.168.43.4:8000/userdata", { token: token })
-				.then((res) => {
-					console.log(res.data);
-					console.log("Token Verified");
-				})
-				.catch((error) => {
-					console.log("Not Verified", { error });
-				});
-		};
-
-		verifyToken();
-	}, []);
-
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView

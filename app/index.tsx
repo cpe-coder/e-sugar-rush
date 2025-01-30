@@ -18,8 +18,9 @@ export default function Index() {
 					return;
 				}
 				await axios
-					.post("http://192.168.43.4:8000/userdata", { token: token })
+					.post("http://192.168.43.4:8000/userdata", token)
 					.then(async (res) => {
+						console.log("Token Verified");
 						setRedirectTo("/home");
 					});
 			} catch (error) {
