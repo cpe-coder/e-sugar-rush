@@ -11,16 +11,8 @@ interface Props {
 	components: React.ReactNode;
 }
 
-interface dataProps {
-	firstName: string;
-	lastName: string;
-	username: string;
-	address: string;
-}
-
 const ProfileModal = ({ Style, components }: Props) => {
 	const [image, setImage] = useState("");
-	const [data, setData] = useState([{}]);
 	const [visible, setVisible] = useState(false);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [userData, setUserData] = useState("");
@@ -41,24 +33,11 @@ const ProfileModal = ({ Style, components }: Props) => {
 	useEffect(() => {
 		getData();
 
-		const getUserDetails = async () => {
-			try {
-				await axios.get("http://192.168.43.4:8000/get-all-user").then((res) => {
-					if (res.status == 200) {
-						setData(res.data.data);
-					}
-				});
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
 		const fetchImage = async () => {
 			const result = await AsyncStorage.getItem("image");
 			setImage(result || "");
 		};
 
-		getUserDetails();
 		fetchImage();
 	});
 
