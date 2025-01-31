@@ -1,6 +1,7 @@
 import components from "@/components";
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
+import { ref, set } from "firebase/database";
 import React from "react";
 import {
 	Image,
@@ -11,10 +12,12 @@ import {
 	View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import database from "../../lib/firebase.config";
 
 const Control = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [visibile, setVisible] = React.useState(false);
+	const [power, setPower] = React.useState(false);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -25,6 +28,13 @@ const Control = () => {
 
 	const extractionSizeVisibility = () => {
 		setVisible((prev) => !prev);
+	};
+
+	const activePower = async () => {
+		const valueRef = ref(database, "Controls/power");
+		await set(valueRef, power ? true : false);
+		setPower((prev) => !prev);
+		console.log("This is power", power);
 	};
 
 	return (
@@ -41,6 +51,7 @@ const Control = () => {
 							MAIN CONTROLS
 						</Text>
 						<TouchableOpacity
+							onPress={activePower}
 							disabled={false}
 							className="bg-white flex-row gap-2 items-center justify-center py-2 w-full rounded-2xl"
 						>
