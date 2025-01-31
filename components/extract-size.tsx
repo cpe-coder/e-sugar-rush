@@ -20,24 +20,25 @@ const ExtractionSize = () => {
 	const [value, setValue] = React.useState(null);
 	const [isFocus, setIsFocus] = React.useState(false);
 
+	console.log(value);
 	return (
 		<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
 			<Text className="text-center text-white font-bold text-2xl">
-				Extractin of SugarCane Juice
+				Select Juice Size
 			</Text>
 			<Dropdown
 				style={[styles.dropdown, isFocus && { borderColor: "white" }]}
 				placeholderStyle={styles.placeholderStyle}
 				selectedTextStyle={styles.selectedTextStyle}
-				inputSearchStyle={styles.inputSearchStyle}
+				// inputSearchStyle={styles.inputSearchStyle}
 				iconStyle={styles.iconStyle}
 				data={data}
-				search
+				// search
 				maxHeight={300}
 				labelField="label"
 				valueField="value"
 				placeholder={!isFocus ? "Select Size" : "..."}
-				searchPlaceholder="Search..."
+				// searchPlaceholder="Search..."
 				value={value}
 				onFocus={() => setIsFocus(true)}
 				onBlur={() => setIsFocus(false)}
@@ -48,7 +49,7 @@ const ExtractionSize = () => {
 				renderLeftIcon={() => (
 					<AntDesign
 						style={styles.icon}
-						color={isFocus ? "white" : "white"}
+						color="white"
 						name="Safety"
 						size={20}
 					/>
@@ -94,9 +95,9 @@ const styles = StyleSheet.create({
 		width: 25,
 		height: 25,
 	},
-	inputSearchStyle: {
-		height: 40,
-		fontSize: 16,
-		borderRadius: 8,
-	},
+	// inputSearchStyle: {
+	// 	height: 40,
+	// 	fontSize: 16,
+	// 	borderRadius: 8,
+	// },
 });
