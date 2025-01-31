@@ -1,6 +1,7 @@
 import CustomButton from "@/components/custom-button";
 import CustomInput from "@/components/custom-input";
 import PasswordInput from "@/components/password-input";
+import ExtractionSize from "./extract-size";
 import HiddenEye from "./hidden-eye";
 import ProfileModal from "./profile-modal";
 import TabsHeader from "./tabs-header";
@@ -18,6 +19,7 @@ const components = {
 	TabsHeader,
 	ProfileModal,
 	UpdateCredentials,
+	ExtractionSize,
 };
 
 export default components;

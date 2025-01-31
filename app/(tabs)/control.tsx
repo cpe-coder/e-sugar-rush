@@ -1,3 +1,4 @@
+import components from "@/components";
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
 import React from "react";
@@ -13,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Control = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [visibile, setVisible] = React.useState(false);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -20,6 +22,11 @@ const Control = () => {
 			setRefreshing(false);
 		}, 2000);
 	}, []);
+
+	const extractionSizeVisibility = () => {
+		setVisible((prev) => !prev);
+	};
+
 	return (
 		<SafeAreaView className="h-full bg-primary py-8 px-6">
 			<ScrollView
@@ -82,12 +89,17 @@ const Control = () => {
 								Temperature
 							</Text>
 						</View>
-						<View className="items-center justify-between mb-3 mt-10 flex-row">
+						<components.ExtractionSize />
+						<View className="items-center justify-between mb-3 mt-5 flex-row">
 							<Text className="text-white text-xl p-2">TIMER</Text>
-							<TouchableOpacity className="p-2 px-4 bg-white rounded-xl">
+							<TouchableOpacity
+								onPress={extractionSizeVisibility}
+								className="p-2 px-4 bg-white rounded-xl"
+							>
 								<Text className="text-primary font-semibold">Extract</Text>
 							</TouchableOpacity>
 						</View>
+
 						<View className="w-full py-3 px-4 bg-lightYellow rounded-2xl justify-around items-center flex-row">
 							<Text className="text-white text-xl font-semibold">Cooking</Text>
 							<Text className="text-white text-3xl font-semibold">

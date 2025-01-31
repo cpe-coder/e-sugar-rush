@@ -65,7 +65,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 		setVisible((prev) => !prev);
 	};
 
-	const renderItem = ({ item }) => {
+	const renderItem = ({ item }: any) => {
 		return (
 			<>
 				<View className="flex-row justify-center mb-4 items-center gap-3">
