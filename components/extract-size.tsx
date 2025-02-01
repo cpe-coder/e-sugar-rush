@@ -1,26 +1,37 @@
+import database from "@/lib/firebase.config";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { ref, set } from "firebase/database";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 const data = [
-	{ label: "1 Litter", value: "1" },
-	{ label: "2 Litters", value: "2" },
-	{ label: "3 Litters", value: "3" },
-	{ label: "4 Litters", value: "4" },
-	{ label: "5 Litters", value: "5" },
-	{ label: "6 Litters", value: "6" },
-	{ label: "7 Litters", value: "7" },
-	{ label: "8 Litters", value: "8" },
-	{ label: "9 Litters", value: "9" },
-	{ label: "10 Litters", value: "10" },
+	{ label: "None", value: 0 },
+	{ label: "1 Litter", value: 1 },
+	{ label: "2 Litters", value: 2 },
+	{ label: "3 Litters", value: 3 },
+	{ label: "4 Litters", value: 4 },
+	{ label: "5 Litters", value: 5 },
+	{ label: "6 Litters", value: 6 },
+	{ label: "7 Litters", value: 7 },
+	{ label: "8 Litters", value: 8 },
+	{ label: "9 Litters", value: 9 },
+	{ label: "10 Litters", value: 10 },
 ];
 
 const ExtractionSize = () => {
 	const [value, setValue] = React.useState(null);
 	const [isFocus, setIsFocus] = React.useState(false);
 
-	console.log(value);
+	React.useEffect(() => {
+		setJuiceSize();
+	});
+
+	const setJuiceSize = async () => {
+		const valueRef = ref(database, "Sizes/litters");
+		await set(valueRef, value);
+	};
+
 	return (
 		<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
 			<Text className="text-center text-white font-bold text-2xl">
@@ -30,15 +41,12 @@ const ExtractionSize = () => {
 				style={[styles.dropdown, isFocus && { borderColor: "white" }]}
 				placeholderStyle={styles.placeholderStyle}
 				selectedTextStyle={styles.selectedTextStyle}
-				// inputSearchStyle={styles.inputSearchStyle}
 				iconStyle={styles.iconStyle}
 				data={data}
-				// search
 				maxHeight={300}
 				labelField="label"
 				valueField="value"
 				placeholder={!isFocus ? "Select Size" : "..."}
-				// searchPlaceholder="Search..."
 				value={value}
 				onFocus={() => setIsFocus(true)}
 				onBlur={() => setIsFocus(false)}
@@ -95,9 +103,4 @@ const styles = StyleSheet.create({
 		width: 25,
 		height: 25,
 	},
-	// inputSearchStyle: {
-	// 	height: 40,
-	// 	fontSize: 16,
-	// 	borderRadius: 8,
-	// },
 });

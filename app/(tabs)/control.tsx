@@ -73,10 +73,6 @@ const Control = () => {
 		}, 2000);
 	}, []);
 
-	const extractionSizeVisibility = () => {
-		setVisible((prev) => !prev);
-	};
-
 	const activePower = async () => {
 		const valueRef = ref(database, "Controls/power");
 		await set(valueRef, power ? true : false);
