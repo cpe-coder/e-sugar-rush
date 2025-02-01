@@ -203,10 +203,7 @@ const Control = () => {
 						<components.ExtractionSize />
 						<View className="items-center justify-between mb-3 mt-5 flex-row">
 							<Text className="text-white text-xl p-2">TIMER</Text>
-							<TouchableOpacity
-								onPress={extractionSizeVisibility}
-								className="p-2 px-4 bg-white rounded-xl"
-							>
+							<TouchableOpacity className="p-2 px-4 bg-white rounded-xl">
 								<Text className="text-primary font-semibold">Extract</Text>
 							</TouchableOpacity>
 						</View>
