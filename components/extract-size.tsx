@@ -20,7 +20,7 @@ const data = [
 ];
 
 const ExtractionSize = () => {
-	const [value, setValue] = React.useState(null);
+	const [value, setValue] = React.useState(0);
 	const [isFocus, setIsFocus] = React.useState(false);
 
 	React.useEffect(() => {
