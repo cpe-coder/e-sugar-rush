@@ -25,42 +25,45 @@ const Control = () => {
 	const [isBoil, setIsBoil] = React.useState(false);
 	const [dry, setDry] = React.useState(false);
 	const [isDry, setIsDry] = React.useState(false);
+	const [temperature, setTemperature] = React.useState(0);
 
 	React.useEffect(() => {
+		fetchTemperature();
 		getPowerValue();
 		getExtractValue();
 		getBoilValue();
 		getDryValue();
 	});
 
+	const fetchTemperature = () => {
+		const valueRef = ref(database, "Sensors/temperature");
+		const subscribe = onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setTemperature(value);
+		});
+
+		return () => subscribe();
+	};
+
 	const getPowerValue = async () => {
 		const valueRef = ref(database, "Controls/power");
 		const value = await get(valueRef);
 		setIsPower(value.val());
 	};
-	const getExtractValue = () => {
+	const getExtractValue = async () => {
 		const valueRef = ref(database, "Controls/extract");
-		const subscribe = onValue(valueRef, (snapshot) => {
-			const value = snapshot.val();
-			setExtract(value);
-		});
-		return () => subscribe();
+		const value = await get(valueRef);
+		setIsExtract(value.val());
 	};
-	const getBoilValue = () => {
+	const getBoilValue = async () => {
 		const valueRef = ref(database, "Controls/boil");
-		const subscribe = onValue(valueRef, (snapshot) => {
-			const value = snapshot.val();
-			setBoil(value);
-		});
-		return () => subscribe();
+		const value = await get(valueRef);
+		setIsBoil(value.val());
 	};
-	const getDryValue = () => {
+	const getDryValue = async () => {
 		const valueRef = ref(database, "Controls/dry");
-		const subscribe = onValue(valueRef, (snapshot) => {
-			const value = snapshot.val();
-			setDry(value);
-		});
-		return () => subscribe();
+		const value = await get(valueRef);
+		setIsDry(value.val());
 	};
 
 	const onRefresh = React.useCallback(() => {
@@ -116,22 +119,22 @@ const Control = () => {
 						<View className="absolute left-4  -top-5 flex-row justify-start items-center gap-1">
 							<View
 								className={`w-4 h-4 mr-2 border-[1px] border-gray-300 rounded-full ${
-									power ? "bg-black" : "bg-red-500"
+									isPower && "bg-red-500"
 								}`}
 							></View>
 							<View
 								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									extract ? "bg-black" : "bg-yellow"
+									isExtract && "bg-yellow"
 								}`}
 							></View>
 							<View
 								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									boil ? "bg-black" : "bg-yellow"
+									isBoil && "bg-yellow"
 								}`}
 							></View>
 							<View
 								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									dry ? "bg-black" : "bg-yellow"
+									isDry && "bg-yellow"
 								}`}
 							></View>
 						</View>
@@ -191,7 +194,7 @@ const Control = () => {
 						</View>
 						<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
 							<Text className="text-white text-3xl font-semibold">
-								50&#8451;
+								{temperature}&#8451;
 							</Text>
 							<Text className="text-white text-3xl font-semibold">
 								Temperature
