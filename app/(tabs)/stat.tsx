@@ -1,10 +1,38 @@
 import logo from "@/constant/logo";
+import database from "@/lib/firebase.config";
+import { onValue, ref } from "firebase/database";
 import React from "react";
 import { Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stat = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [mainStorage, setMainStorage] = React.useState(0);
+	const [juiceStorage, setJuiceStorage] = React.useState(0);
+
+	React.useEffect(() => {
+		getMainStorage();
+		getJuiceStorage();
+	});
+
+	const getMainStorage = async () => {
+		const valueRef = ref(database, "Sensors/mainStorage");
+
+		const subscribe = await onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setMainStorage(value);
+		});
+		return () => subscribe();
+	};
+	const getJuiceStorage = async () => {
+		const valueRef = ref(database, "Sensors/juiceStorage");
+
+		const subscribe = await onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setJuiceStorage(value);
+		});
+		return () => subscribe();
+	};
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -13,8 +41,6 @@ const Stat = () => {
 		}, 2000);
 	}, []);
 
-	const juiceStorage = 1;
-	const mainStorage = 12;
 	const maxMainStorage = 15;
 	const maxJuiceStorage = 5;
 
