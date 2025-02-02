@@ -1,22 +1,37 @@
-import components from "@/components";
 import icons from "@/constant/icons";
 import logo from "@/constant/logo";
+import database from "@/lib/firebase.config";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { get, onValue, ref, set } from "firebase/database";
 import React from "react";
 import {
 	Image,
 	RefreshControl,
 	ScrollView,
+	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import { SafeAreaView } from "react-native-safe-area-context";
-import database from "../../lib/firebase.config";
+
+const data = [
+	{ label: "None", value: 0 },
+	{ label: "1 Litter", value: 1 },
+	{ label: "2 Litters", value: 2 },
+	{ label: "3 Litters", value: 3 },
+	{ label: "4 Litters", value: 4 },
+	{ label: "5 Litters", value: 5 },
+	{ label: "6 Litters", value: 6 },
+	{ label: "7 Litters", value: 7 },
+	{ label: "8 Litters", value: 8 },
+	{ label: "9 Litters", value: 9 },
+	{ label: "10 Litters", value: 10 },
+];
 
 const Control = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
-	const [visibile, setVisible] = React.useState(false);
 	const [power, setPower] = React.useState(false);
 	const [isPower, setIsPower] = React.useState(false);
 	const [extract, setExtract] = React.useState(false);
@@ -28,10 +43,11 @@ const Control = () => {
 	const [temperature, setTemperature] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
 	const [extractDisable, setExtractDisable] = React.useState(false);
+	const [value, setValue] = React.useState(null);
+	const [isFocus, setIsFocus] = React.useState(false);
 
 	React.useEffect(() => {
-		getLitterSizeValue();
-
+		setJuiceSize();
 		fetchTemperature();
 		getPowerValue();
 		getExtractValue();
@@ -43,17 +59,17 @@ const Control = () => {
 		} else {
 			setDisable(false);
 		}
-	});
 
-	const getLitterSizeValue = async () => {
-		const valueRef = ref(database, "Sizes/litters");
-		const value = await get(valueRef);
-		console.log(value);
-		if (value.val() === 0) {
+		if (value === null || value === 0) {
 			setExtractDisable(true);
 		} else {
 			setExtractDisable(false);
 		}
+	});
+
+	const setJuiceSize = async () => {
+		const valueRef = ref(database, "Sizes/litters");
+		await set(valueRef, value);
 	};
 
 	const fetchTemperature = () => {
@@ -235,7 +251,37 @@ const Control = () => {
 								Temperature
 							</Text>
 						</View>
-						<components.ExtractionSize />
+						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
+							<Text className="text-center text-white font-bold text-2xl">
+								Select Juice Size
+							</Text>
+							<Dropdown
+								style={[styles.dropdown, isFocus && { borderColor: "white" }]}
+								placeholderStyle={styles.placeholderStyle}
+								selectedTextStyle={styles.selectedTextStyle}
+								iconStyle={styles.iconStyle}
+								data={data}
+								maxHeight={300}
+								labelField="label"
+								valueField="value"
+								placeholder={!isFocus ? "Select Size" : "..."}
+								value={value}
+								onFocus={() => setIsFocus(true)}
+								onBlur={() => setIsFocus(false)}
+								onChange={(item) => {
+									setValue(item.value);
+									setIsFocus(false);
+								}}
+								renderLeftIcon={() => (
+									<AntDesign
+										style={styles.icon}
+										color="white"
+										name="Safety"
+										size={20}
+									/>
+								)}
+							/>
+						</View>
 						<View className="items-center justify-between mb-3 mt-5 flex-row">
 							<Text className="text-white text-xl p-2">TIMER</Text>
 							<TouchableOpacity
@@ -274,3 +320,39 @@ const Control = () => {
 };
 
 export default Control;
+
+const styles = StyleSheet.create({
+	dropdown: {
+		height: 50,
+		borderColor: "white",
+		borderWidth: 1,
+		borderRadius: 8,
+		paddingHorizontal: 8,
+		width: "100%",
+	},
+	icon: {
+		marginRight: 5,
+	},
+	label: {
+		position: "absolute",
+		backgroundColor: "white",
+		left: 22,
+		top: 8,
+		zIndex: 999,
+		paddingHorizontal: 8,
+		fontSize: 14,
+		borderRadius: 8,
+	},
+	placeholderStyle: {
+		fontSize: 16,
+		color: "white",
+	},
+	selectedTextStyle: {
+		fontSize: 16,
+		color: "white",
+	},
+	iconStyle: {
+		width: 25,
+		height: 25,
+	},
+});
