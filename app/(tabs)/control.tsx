@@ -28,6 +28,11 @@ const data = [
 	{ label: "8 Litters", value: 8 },
 	{ label: "9 Litters", value: 9 },
 	{ label: "10 Litters", value: 10 },
+	{ label: "11 Litters", value: 10 },
+	{ label: "12 Litters", value: 10 },
+	{ label: "13 Litters", value: 10 },
+	{ label: "14 Litters", value: 10 },
+	{ label: "15 Litters", value: 10 },
 ];
 
 const Control = () => {
@@ -40,6 +45,8 @@ const Control = () => {
 	const [isBoil, setIsBoil] = React.useState(false);
 	const [dry, setDry] = React.useState(false);
 	const [isDry, setIsDry] = React.useState(false);
+	const [startExtraction, setStartExtraction] = React.useState(false);
+	const [isStartExtraction, setIsStartExtraction] = React.useState(false);
 	const [temperature, setTemperature] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
 	const [extractDisable, setExtractDisable] = React.useState(false);
@@ -53,6 +60,7 @@ const Control = () => {
 		getExtractValue();
 		getBoilValue();
 		getDryValue();
+		getStartExtractionValue();
 		if (!isPower) {
 			setDisable(true);
 			updateControls();
@@ -89,6 +97,12 @@ const Control = () => {
 		await set(extractValueRef, false);
 		await set(boilValueRef, false);
 		await set(dryValueRef, false);
+	};
+
+	const getStartExtractionValue = async () => {
+		const valueRef = ref(database, "Controls/startExtraction");
+		const value = await get(valueRef);
+		setIsStartExtraction(value.val());
 	};
 
 	const getPowerValue = async () => {
@@ -145,6 +159,13 @@ const Control = () => {
 		await set(valueRef, dry ? true : false);
 		setDry((prev) => !prev);
 		setIsDry(dry);
+	};
+
+	const activeStartExtraction = async () => {
+		const valueRef = ref(database, "Controls/startExtraction");
+		await set(valueRef, startExtraction ? true : false);
+		setStartExtraction((prev) => !prev);
+		setIsStartExtraction(startExtraction);
 	};
 
 	return (
@@ -253,13 +274,18 @@ const Control = () => {
 						</View>
 						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
 							<Text className="text-center text-white font-bold text-2xl">
-								Select Juice Size
+								Select Juice Size for Cooking
 							</Text>
 							<Dropdown
-								style={[styles.dropdown, isFocus && { borderColor: "white" }]}
+								style={[
+									styles.dropdown,
+									isFocus && { borderColor: "white" },
+									isStartExtraction && { backgroundColor: "gray" },
+								]}
 								placeholderStyle={styles.placeholderStyle}
 								selectedTextStyle={styles.selectedTextStyle}
 								iconStyle={styles.iconStyle}
+								disable={isStartExtraction}
 								data={data}
 								maxHeight={300}
 								labelField="label"
@@ -285,17 +311,22 @@ const Control = () => {
 						<View className="items-center justify-between mb-3 mt-5 flex-row">
 							<Text className="text-white text-xl p-2">TIMER</Text>
 							<TouchableOpacity
-								disabled={extractDisable}
+								onPress={activeStartExtraction}
+								disabled={extractDisable || isStartExtraction}
 								className={`p-2 px-4 rounded-xl ${
-									extractDisable ? "bg-gray-500" : "bg-white"
+									extractDisable || isStartExtraction
+										? "bg-gray-500"
+										: "bg-white"
 								}`}
 							>
 								<Text
 									className={` font-semibold ${
-										extractDisable ? "text-white" : "text-primary"
+										extractDisable || isStartExtraction
+											? "text-white"
+											: "text-primary"
 									}`}
 								>
-									Extract
+									{isStartExtraction ? "Extraction working..." : "Extract"}
 								</Text>
 							</TouchableOpacity>
 						</View>

@@ -87,7 +87,7 @@ const Stat = () => {
 							</View>
 							<View className="items-center justify-center">
 								<Text className="text-white absolute -rotate-90">
-									Juice Storage
+									Juice Output Storage
 								</Text>
 							</View>
 						</View>
