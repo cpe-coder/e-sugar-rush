@@ -27,14 +27,16 @@ const Control = () => {
 	const [isDry, setIsDry] = React.useState(false);
 	const [temperature, setTemperature] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
+	const [extractDisable, setExtractDisable] = React.useState(false);
 
 	React.useEffect(() => {
+		getLitterSizeValue();
+
 		fetchTemperature();
 		getPowerValue();
 		getExtractValue();
 		getBoilValue();
 		getDryValue();
-
 		if (!isPower) {
 			setDisable(true);
 			updateControls();
@@ -42,6 +44,17 @@ const Control = () => {
 			setDisable(false);
 		}
 	});
+
+	const getLitterSizeValue = async () => {
+		const valueRef = ref(database, "Sizes/litters");
+		const value = await get(valueRef);
+		console.log(value);
+		if (value.val() === 0) {
+			setExtractDisable(true);
+		} else {
+			setExtractDisable(false);
+		}
+	};
 
 	const fetchTemperature = () => {
 		const valueRef = ref(database, "Sensors/temperature");
@@ -225,8 +238,19 @@ const Control = () => {
 						<components.ExtractionSize />
 						<View className="items-center justify-between mb-3 mt-5 flex-row">
 							<Text className="text-white text-xl p-2">TIMER</Text>
-							<TouchableOpacity className="p-2 px-4 bg-white rounded-xl">
-								<Text className="text-primary font-semibold">Extract</Text>
+							<TouchableOpacity
+								disabled={extractDisable}
+								className={`p-2 px-4 rounded-xl ${
+									extractDisable ? "bg-gray-500" : "bg-white"
+								}`}
+							>
+								<Text
+									className={` font-semibold ${
+										extractDisable ? "text-white" : "text-primary"
+									}`}
+								>
+									Extract
+								</Text>
 							</TouchableOpacity>
 						</View>
 
