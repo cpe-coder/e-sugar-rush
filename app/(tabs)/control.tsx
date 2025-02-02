@@ -26,6 +26,7 @@ const Control = () => {
 	const [dry, setDry] = React.useState(false);
 	const [isDry, setIsDry] = React.useState(false);
 	const [temperature, setTemperature] = React.useState(0);
+	const [disable, setDisable] = React.useState(false);
 
 	React.useEffect(() => {
 		fetchTemperature();
@@ -33,6 +34,13 @@ const Control = () => {
 		getExtractValue();
 		getBoilValue();
 		getDryValue();
+
+		if (!isPower) {
+			setDisable(true);
+			updateControls();
+		} else {
+			setDisable(false);
+		}
 	});
 
 	const fetchTemperature = () => {
@@ -43,6 +51,15 @@ const Control = () => {
 		});
 
 		return () => subscribe();
+	};
+
+	const updateControls = async () => {
+		const extractValueRef = ref(database, "Controls/extract");
+		const boilValueRef = ref(database, "Controls/boil");
+		const dryValueRef = ref(database, "Controls/dry");
+		await set(extractValueRef, false);
+		await set(boilValueRef, false);
+		await set(dryValueRef, false);
 	};
 
 	const getPowerValue = async () => {
@@ -152,8 +169,11 @@ const Control = () => {
 						</TouchableOpacity>
 						<View className="flex-row items-center mt-2 justify-between">
 							<TouchableOpacity
+								disabled={disable}
 								onPress={activeExtract}
-								className="rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center bg-primary"
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
 							>
 								<Image
 									className="w-8 h-8"
@@ -164,8 +184,11 @@ const Control = () => {
 								<Text className="text-white">Extract</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
+								disabled={disable}
 								onPress={activeBoil}
-								className="rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center bg-primary"
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
 							>
 								<Image
 									className="w-8 h-8"
@@ -176,8 +199,11 @@ const Control = () => {
 								<Text className="text-white">Boil</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
+								disabled={disable}
 								onPress={activeDry}
-								className="rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center bg-primary"
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
 							>
 								<Image
 									className="w-8 h-8"
