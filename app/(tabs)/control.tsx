@@ -67,6 +67,7 @@ const Control = () => {
 	const [isFocus, setIsFocus] = React.useState(false);
 
 	useEffect(() => {
+		onRefresh();
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
 		fetchTemperature();
@@ -127,13 +128,21 @@ const Control = () => {
 
 	const getStartExtractionValue = async () => {
 		const valueRef = ref(database, "Controls/startExtraction");
-		const value = await get(valueRef);
-		setIsStartBoiling(value.val());
+		const subscribe = onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setIsStartBoiling(value);
+		});
+
+		return () => subscribe();
 	};
 	const getStartTransferingValue = async () => {
 		const valueRef = ref(database, "Controls/startTransfering");
-		const value = await get(valueRef);
-		setIsStartTransfering(value.val());
+		const subscribe = onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setIsStartTransfering(value);
+		});
+
+		return () => subscribe();
 	};
 
 	const getPowerValue = async () => {
