@@ -374,7 +374,7 @@ const Control = () => {
 							</View>
 						</View>
 
-						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
+						<View className="w-full pt-2 pb-4 mt-4 px-8 gap-4 border-t-2 border-gray-300">
 							<Text className="text-center text-white font-bold text-xl">
 								Select Juice Size for Juice Storage
 							</Text>
