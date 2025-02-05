@@ -368,7 +368,7 @@ const Control = () => {
 												: "text-primary"
 										}`}
 									>
-										{isStartBoiling ? "working.." : "Extract"}
+										{isStartBoiling ? "working.." : "Transfer"}
 									</Text>
 								</TouchableOpacity>
 							</View>

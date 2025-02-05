@@ -1,7 +1,7 @@
 import logo from "@/constant/logo";
 import database from "@/lib/firebase.config";
-import { onValue, ref } from "firebase/database";
-import React from "react";
+import { onValue, ref, set } from "firebase/database";
+import React, { useEffect } from "react";
 import { Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -9,11 +9,103 @@ const Stat = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [mainStorage, setMainStorage] = React.useState(0);
 	const [juiceStorage, setJuiceStorage] = React.useState(0);
+	const [cookingTime, setCookingTime] = React.useState(0);
+	const [isCookingRunning, setIsCookingRunning] = React.useState(false);
+	const [dryingTime, setDryingTime] = React.useState(0);
+	const [isDryingRunning, setIsDryingRunning] = React.useState(false);
 
 	React.useEffect(() => {
 		getMainStorage();
 		getJuiceStorage();
 	});
+
+	useEffect(() => {
+		const timerRef = ref(database, "Timer/cooking");
+
+		const onValueChange = onValue(timerRef, (snapshot) => {
+			const newTime = snapshot.val();
+			if (newTime > 0 && newTime !== cookingTime) {
+				setCookingTime(newTime);
+				setIsCookingRunning(true);
+				setTimeout(() => {
+					set(timerRef, 0);
+				}, 1000);
+			}
+		});
+
+		return () => onValueChange();
+	}, [cookingTime]);
+
+	useEffect(() => {
+		const timerRef = ref(database, "Timer/drying");
+
+		const onValueChange = onValue(timerRef, (snapshot) => {
+			const newTime = snapshot.val();
+			if (newTime > 0 && newTime !== cookingTime) {
+				setDryingTime(newTime);
+				setIsDryingRunning(true);
+				setTimeout(() => {
+					set(timerRef, 0);
+				}, 1000);
+			}
+		});
+
+		return () => onValueChange();
+	}, [dryingTime]);
+
+	useEffect(() => {
+		if (!isCookingRunning || cookingTime <= 0) {
+			setIsCookingRunning(false);
+			return;
+		}
+
+		// Countdown timer
+		const timer = setInterval(() => {
+			setCookingTime((prevTime) => {
+				if (prevTime <= 1000) {
+					clearInterval(timer);
+					setIsCookingRunning(false);
+					return 0;
+				}
+				return prevTime - 1000;
+			});
+		}, 1000);
+
+		return () => clearInterval(timer);
+	}, [isCookingRunning, cookingTime]);
+
+	useEffect(() => {
+		if (!isDryingRunning || dryingTime <= 0) {
+			setIsDryingRunning(false);
+			return;
+		}
+
+		// Countdown timer
+		const timer = setInterval(() => {
+			setDryingTime((prevTime) => {
+				if (prevTime <= 1000) {
+					clearInterval(timer);
+					setIsDryingRunning(false);
+					return 0;
+				}
+				return prevTime - 1000;
+			});
+		}, 1000);
+
+		return () => clearInterval(timer);
+	}, [isDryingRunning, dryingTime]);
+
+	const formatTime = (ms: number) => {
+		const totalSeconds = Math.floor(ms / 1000);
+		const hours = Math.floor(totalSeconds / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
+		const seconds = totalSeconds % 60;
+
+		return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+			2,
+			"0"
+		)}:${String(seconds).padStart(2, "0")}`;
+	};
 
 	const getMainStorage = async () => {
 		const valueRef = ref(database, "Sensors/mainStorage");
@@ -97,7 +189,7 @@ const Stat = () => {
 							Remaining Time For Cooking
 						</Text>
 						<Text className="text-primary font-bold text-2xl text-center">
-							00:01:59
+							{formatTime(cookingTime)}
 						</Text>
 					</View>
 					<View className="w-full bg-primary3 rounded-3xl py-3 justify-center items-center">
@@ -105,7 +197,7 @@ const Stat = () => {
 							In Queue: Drying
 						</Text>
 						<Text className="text-white font-bold text-2xl text-center">
-							00:01:59
+							{formatTime(dryingTime)}
 						</Text>
 					</View>
 				</View>
