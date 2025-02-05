@@ -3,7 +3,7 @@ import logo from "@/constant/logo";
 import database from "@/lib/firebase.config";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { get, onValue, ref, set } from "firebase/database";
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Image,
 	RefreshControl,
@@ -62,11 +62,11 @@ const Control = () => {
 	const [disable, setDisable] = React.useState(false);
 	const [isBloiling, setIsBoiling] = React.useState(false);
 	const [isTrasfering, setIsTransfering] = React.useState(false);
-	const [toBoilJuiceValue, setToBoilJuiceValue] = React.useState(null);
-	const [toJuiceStorageValue, setToJuiceStorageValue] = React.useState(null);
+	const [toBoilJuiceValue, setToBoilJuiceValue] = React.useState(0);
+	const [toJuiceStorageValue, setToJuiceStorageValue] = React.useState(0);
 	const [isFocus, setIsFocus] = React.useState(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
 		fetchTemperature();
@@ -83,13 +83,13 @@ const Control = () => {
 			setDisable(false);
 		}
 
-		if (toBoilJuiceValue === null || toBoilJuiceValue === 0) {
+		if (toBoilJuiceValue === 0) {
 			setIsBoiling(true);
 		} else {
 			setIsBoiling(false);
 		}
 
-		if (toJuiceStorageValue === null || toJuiceStorageValue === 0) {
+		if (toJuiceStorageValue === 0) {
 			setIsTransfering(true);
 		} else {
 			setIsTransfering(false);
