@@ -67,7 +67,6 @@ const Control = () => {
 	const [isFocus, setIsFocus] = React.useState(false);
 
 	useEffect(() => {
-		onRefresh();
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
 		fetchTemperature();
