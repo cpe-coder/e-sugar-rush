@@ -96,6 +96,7 @@ const ProfileModal = ({ Style, components }: Props) => {
 			<View className="absolute w-full justify-center top-[160px] z-[1000px] items-center">
 				<View className="rounded-full w-52 h-52 bg-gray-300">
 					<Image
+						tintColor={"#fff"}
 						resizeMode="contain"
 						source={!image ? icons.Profile : { uri: image }}
 						className="rounded-full w-52 h-52"

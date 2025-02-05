@@ -44,9 +44,10 @@ const HeaderRight = () => {
 				className="w-5 h-5"
 				source={icons.Bell}
 			/>
-			<View>
+			<View className="bg-gray-300 rounded-full">
 				<Image
 					resizeMode="contain"
+					tintColor={"#fff"}
 					className="w-12 border border-gray-400 rounded-full p-2 h-12"
 					source={!image ? icons.Profile : { uri: image }}
 				/>
