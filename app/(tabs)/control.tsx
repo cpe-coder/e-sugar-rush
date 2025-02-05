@@ -16,7 +16,7 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const data = [
+const toBoilJuiceData = [
 	{ label: "None", value: 0 },
 	{ label: "1 Litter", value: 1 },
 	{ label: "2 Litters", value: 2 },
@@ -35,6 +35,15 @@ const data = [
 	{ label: "15 Litters", value: 10 },
 ];
 
+const toJuiceStorageData = [
+	{ label: "None", value: 0 },
+	{ label: "1 Litter", value: 1 },
+	{ label: "2 Litters", value: 2 },
+	{ label: "3 Litters", value: 3 },
+	{ label: "4 Litters", value: 4 },
+	{ label: "5 Litters", value: 5 },
+];
+
 const Control = () => {
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [power, setPower] = React.useState(false);
@@ -46,21 +55,27 @@ const Control = () => {
 	const [dry, setDry] = React.useState(false);
 	const [isDry, setIsDry] = React.useState(false);
 	const [startExtraction, setStartExtraction] = React.useState(false);
-	const [isStartExtraction, setIsStartExtraction] = React.useState(false);
+	const [startTransfering, setStartTransfering] = React.useState(false);
+	const [isStartBoiling, setIsStartBoiling] = React.useState(false);
+	const [isStartTransfering, setIsStartTransfering] = React.useState(false);
 	const [temperature, setTemperature] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
-	const [extractDisable, setExtractDisable] = React.useState(false);
-	const [value, setValue] = React.useState(null);
+	const [isBloiling, setIsBoiling] = React.useState(false);
+	const [isTrasfering, setIsTransfering] = React.useState(false);
+	const [toBoilJuiceValue, setToBoilJuiceValue] = React.useState(null);
+	const [toJuiceStorageValue, setToJuiceStorageValue] = React.useState(null);
 	const [isFocus, setIsFocus] = React.useState(false);
 
 	React.useEffect(() => {
-		setJuiceSize();
+		setBoiLJuiceSize();
+		setTransferJuiceSize();
 		fetchTemperature();
 		getPowerValue();
 		getExtractValue();
 		getBoilValue();
 		getDryValue();
 		getStartExtractionValue();
+		getStartTransferingValue();
 		if (!isPower) {
 			setDisable(true);
 			updateControls();
@@ -68,16 +83,27 @@ const Control = () => {
 			setDisable(false);
 		}
 
-		if (value === null || value === 0) {
-			setExtractDisable(true);
+		if (toBoilJuiceValue === null || toBoilJuiceValue === 0) {
+			setIsBoiling(true);
 		} else {
-			setExtractDisable(false);
+			setIsBoiling(false);
+		}
+
+		if (toJuiceStorageValue === null || toJuiceStorageValue === 0) {
+			setIsTransfering(true);
+		} else {
+			setIsTransfering(false);
 		}
 	});
 
-	const setJuiceSize = async () => {
-		const valueRef = ref(database, "Sizes/litters");
-		await set(valueRef, value);
+	const setBoiLJuiceSize = async () => {
+		const valueRef = ref(database, "Sizes/boilSize");
+		await set(valueRef, toBoilJuiceValue);
+	};
+
+	const setTransferJuiceSize = async () => {
+		const valueRef = ref(database, "Sizes/transferSize");
+		await set(valueRef, toJuiceStorageValue);
 	};
 
 	const fetchTemperature = () => {
@@ -102,7 +128,12 @@ const Control = () => {
 	const getStartExtractionValue = async () => {
 		const valueRef = ref(database, "Controls/startExtraction");
 		const value = await get(valueRef);
-		setIsStartExtraction(value.val());
+		setIsStartBoiling(value.val());
+	};
+	const getStartTransferingValue = async () => {
+		const valueRef = ref(database, "Controls/startTransfering");
+		const value = await get(valueRef);
+		setIsStartTransfering(value.val());
 	};
 
 	const getPowerValue = async () => {
@@ -165,7 +196,14 @@ const Control = () => {
 		const valueRef = ref(database, "Controls/startExtraction");
 		await set(valueRef, startExtraction ? true : false);
 		setStartExtraction((prev) => !prev);
-		setIsStartExtraction(startExtraction);
+		setIsStartBoiling(startExtraction);
+	};
+
+	const activeStartTransfering = async () => {
+		const valueRef = ref(database, "Controls/startTransfering");
+		await set(valueRef, startTransfering ? true : false);
+		setStartTransfering((prev) => !prev);
+		setIsTransfering(startTransfering);
 	};
 
 	return (
@@ -273,75 +311,117 @@ const Control = () => {
 							</Text>
 						</View>
 						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
-							<Text className="text-center text-white font-bold text-2xl">
+							<Text className="text-center text-white font-bold text-xl">
 								Select Juice Size for Cooking
 							</Text>
-							<Dropdown
-								style={[
-									styles.dropdown,
-									isFocus && { borderColor: "white" },
-									isStartExtraction && { backgroundColor: "gray" },
-								]}
-								placeholderStyle={styles.placeholderStyle}
-								selectedTextStyle={styles.selectedTextStyle}
-								iconStyle={styles.iconStyle}
-								disable={isStartExtraction}
-								data={data}
-								maxHeight={300}
-								labelField="label"
-								valueField="value"
-								placeholder={!isFocus ? "Select Size" : "..."}
-								value={value}
-								onFocus={() => setIsFocus(true)}
-								onBlur={() => setIsFocus(false)}
-								onChange={(item) => {
-									setValue(item.value);
-									setIsFocus(false);
-								}}
-								renderLeftIcon={() => (
-									<AntDesign
-										style={styles.icon}
-										color="white"
-										name="Safety"
-										size={20}
-									/>
-								)}
-							/>
-						</View>
-						<View className="items-center justify-between mb-3 mt-5 flex-row">
-							<Text className="text-white text-xl p-2">TIMER</Text>
-							<TouchableOpacity
-								onPress={activeStartExtraction}
-								disabled={extractDisable || isStartExtraction}
-								className={`p-2 px-4 rounded-xl ${
-									extractDisable || isStartExtraction
-										? "bg-gray-500"
-										: "bg-white"
-								}`}
-							>
-								<Text
-									className={` font-semibold ${
-										extractDisable || isStartExtraction
-											? "text-white"
-											: "text-primary"
+							<View className="flex-row justify-between gap-2 items-center">
+								<Dropdown
+									style={[
+										styles.dropdown,
+										isFocus && { borderColor: "white" },
+										isStartBoiling && { backgroundColor: "gray" },
+									]}
+									placeholderStyle={styles.placeholderStyle}
+									selectedTextStyle={styles.selectedTextStyle}
+									iconStyle={styles.iconStyle}
+									disable={isStartBoiling}
+									data={toBoilJuiceData}
+									maxHeight={300}
+									labelField="label"
+									valueField="value"
+									placeholder={!isFocus ? "Select Size" : "..."}
+									value={toBoilJuiceValue}
+									onFocus={() => setIsFocus(true)}
+									onBlur={() => setIsFocus(false)}
+									onChange={(item) => {
+										setToBoilJuiceValue(item.value);
+										setIsFocus(false);
+									}}
+									renderLeftIcon={() => (
+										<AntDesign
+											style={styles.icon}
+											color="white"
+											name="Safety"
+											size={20}
+										/>
+									)}
+								/>
+								<TouchableOpacity
+									onPress={activeStartExtraction}
+									disabled={isBloiling || isStartBoiling}
+									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
+										isBloiling || isStartBoiling ? "bg-gray-500" : "bg-white"
 									}`}
 								>
-									{isStartExtraction ? "Extraction working..." : "Extract"}
-								</Text>
-							</TouchableOpacity>
+									<Text
+										className={` text-center font-semibold ${
+											isBloiling || isStartBoiling
+												? "text-white"
+												: "text-primary"
+										}`}
+									>
+										{isStartBoiling ? "working.." : "Extract"}
+									</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
 
-						<View className="w-full py-3 px-4 bg-lightYellow rounded-2xl justify-around items-center flex-row">
-							<Text className="text-white text-xl font-semibold">Cooking</Text>
-							<Text className="text-white text-3xl font-semibold">
-								01:23:30
+						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
+							<Text className="text-center text-white font-bold text-xl">
+								Select Juice Size for Juice Storage
 							</Text>
-						</View>
-						<View className="w-full py-3 px-4 mt-4 mb-4 bg-lightYellow rounded-2xl justify-around items-center flex-row">
-							<Text className="text-white text-xl font-semibold">Drying</Text>
-							<Text className="text-white text-3xl font-semibold">
-								01:23:30
-							</Text>
+							<View className="flex-row justify-between gap-2 items-center">
+								<Dropdown
+									style={[
+										styles.dropdown,
+										isFocus && { borderColor: "white" },
+										isStartTransfering && { backgroundColor: "gray" },
+									]}
+									placeholderStyle={styles.placeholderStyle}
+									selectedTextStyle={styles.selectedTextStyle}
+									iconStyle={styles.iconStyle}
+									disable={isStartTransfering}
+									data={toJuiceStorageData}
+									maxHeight={300}
+									labelField="label"
+									valueField="value"
+									placeholder={!isFocus ? "Select Size" : "..."}
+									value={toJuiceStorageValue}
+									onFocus={() => setIsFocus(true)}
+									onBlur={() => setIsFocus(false)}
+									onChange={(item) => {
+										setToJuiceStorageValue(item.value);
+										setIsFocus(false);
+									}}
+									renderLeftIcon={() => (
+										<AntDesign
+											style={styles.icon}
+											color="white"
+											name="Safety"
+											size={20}
+										/>
+									)}
+								/>
+								<TouchableOpacity
+									onPress={activeStartTransfering}
+									disabled={isTrasfering || isStartTransfering}
+									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
+										isTrasfering || isStartTransfering
+											? "bg-gray-500"
+											: "bg-white"
+									}`}
+								>
+									<Text
+										className={` text-center font-semibold ${
+											isTrasfering || isStartTransfering
+												? "text-white"
+												: "text-primary"
+										}`}
+									>
+										{isStartTransfering ? "Working.." : "Transfer"}
+									</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
 					</View>
 				</View>
@@ -359,7 +439,9 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 8,
 		paddingHorizontal: 8,
-		width: "100%",
+		width: "70%",
+		margin: 0,
+		padding: 0,
 	},
 	icon: {
 		marginRight: 5,
