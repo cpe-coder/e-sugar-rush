@@ -261,7 +261,7 @@ const Control = () => {
 							source={icons.Transfering}
 							className="w-20 h-20 "
 							resizeMode="contain"
-							tintColor={"#015d9c"}
+							// tintColor={"#015d9c"}
 						/>
 
 						<Text className="text-center text-sm text-gray-500 font-medium">
@@ -358,7 +358,7 @@ const Control = () => {
 						</View>
 						<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
 							<Text className="text-white text-3xl font-semibold">
-								{temperature}&#8451;
+								{Number(temperature).toFixed(2)}&#8451;
 							</Text>
 							<Text className="text-white text-3xl font-semibold">
 								Temperature
