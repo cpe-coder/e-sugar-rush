@@ -15,6 +15,7 @@ import Roller from "@/assets/icons/roller.png";
 import Security from "@/assets/icons/security.png";
 import Setting from "@/assets/icons/setting.png";
 import Stat from "@/assets/icons/stat.png";
+import Transfering from "@/assets/icons/transfering.gif";
 import User from "@/assets/icons/user.png";
 
 const icons = {
@@ -36,6 +37,7 @@ const icons = {
 	Pen,
 	Close,
 	Profile,
+	Transfering,
 };
 
 export default icons;

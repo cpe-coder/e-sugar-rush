@@ -65,8 +65,16 @@ const Control = () => {
 	const [toBoilJuiceValue, setToBoilJuiceValue] = React.useState(0);
 	const [toJuiceStorageValue, setToJuiceStorageValue] = React.useState(0);
 	const [isFocus, setIsFocus] = React.useState(false);
+	const [isTransferingWorking, setIsTransferingWorking] = React.useState(false);
+	const [checkingJuiceStorage, setCheckingJuiceStorage] = React.useState(true);
 
 	useEffect(() => {
+		if (isStartBoiling || isStartTransfering) {
+			setIsTransferingWorking(true);
+		} else {
+			setIsTransferingWorking(false);
+		}
+
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
 		fetchTemperature();
@@ -76,6 +84,7 @@ const Control = () => {
 		getDryValue();
 		getStartExtractionValue();
 		getStartTransferingValue();
+		getJuiceStorageValue();
 		if (!isPower) {
 			setDisable(true);
 			updateControls();
@@ -95,6 +104,21 @@ const Control = () => {
 			setIsTransfering(false);
 		}
 	});
+
+	const getJuiceStorageValue = async () => {
+		const valueRef = ref(database, "Sensors/juiceStorage");
+		const subscribe = onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			if (value <= 2) {
+				setCheckingJuiceStorage(false);
+			}
+			if (value > 2) {
+				setCheckingJuiceStorage(true);
+			}
+		});
+
+		return () => subscribe();
+	};
 
 	const setBoiLJuiceSize = async () => {
 		const valueRef = ref(database, "Sizes/boilSize");
@@ -223,7 +247,27 @@ const Control = () => {
 			>
 				<View className="justify-center items-center">
 					<Image source={logo.EsugarLogo} />
+					<View
+						className={`w-full   z-[2000px]  bg-white rounded-xl justify-center items-center py-6 gap-2 ${
+							isStartBoiling || isStartTransfering ? "absolute" : "hidden"
+						}`}
+					>
+						<Text className="text-center text-xl text-primary font-bold">
+							{(isStartBoiling && "Transferring juice to boiler...") ||
+								(isStartTransfering &&
+									"Transferring juice to juice storage...")}
+						</Text>
+						<Image
+							source={icons.Transfering}
+							className="w-20 h-20 "
+							resizeMode="contain"
+							tintColor={"#015d9c"}
+						/>
 
+						<Text className="text-center text-sm text-gray-500 font-medium">
+							Please wait while the juice is being transferred to the boiler
+						</Text>
+					</View>
 					<View className="border border-gray-300 bg-primary3 rounded-3xl py-6 mt-10 px-8 w-full">
 						<View className="absolute left-4  -top-5 flex-row justify-start items-center gap-1">
 							<View
@@ -252,8 +296,10 @@ const Control = () => {
 						</Text>
 						<TouchableOpacity
 							onPress={activePower}
-							disabled={false}
-							className="flex-row gap-2 items-center justify-center py-2 w-full rounded-2xl bg-white "
+							disabled={isTransferingWorking}
+							className={`flex-row gap-2 items-center justify-center py-2 w-full rounded-2xl ${
+								isTransferingWorking ? "bg-gray-300" : "bg-white"
+							} `}
 						>
 							<Text className="text-2xl font-bold text-textColor ">Power</Text>
 							<Image
@@ -265,10 +311,10 @@ const Control = () => {
 						</TouchableOpacity>
 						<View className="flex-row items-center mt-2 justify-between">
 							<TouchableOpacity
-								disabled={disable}
+								disabled={disable || isTransferingWorking}
 								onPress={activeExtract}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable ? "bg-gray-500" : "bg-primary"
+									disable || isTransferingWorking ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -280,10 +326,10 @@ const Control = () => {
 								<Text className="text-white">Extract</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={disable}
+								disabled={disable || isTransferingWorking}
 								onPress={activeBoil}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable ? "bg-gray-500" : "bg-primary"
+									disable || isTransferingWorking ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -295,10 +341,10 @@ const Control = () => {
 								<Text className="text-white">Boil</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={disable}
+								disabled={disable || isTransferingWorking}
 								onPress={activeDry}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable ? "bg-gray-500" : "bg-primary"
+									disable || isTransferingWorking ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -328,6 +374,7 @@ const Control = () => {
 										styles.dropdown,
 										isFocus && { borderColor: "white" },
 										isStartBoiling && { backgroundColor: "gray" },
+										isTransferingWorking && { backgroundColor: "gray" },
 									]}
 									placeholderStyle={styles.placeholderStyle}
 									selectedTextStyle={styles.selectedTextStyle}
@@ -356,14 +403,18 @@ const Control = () => {
 								/>
 								<TouchableOpacity
 									onPress={activeStartExtraction}
-									disabled={isBloiling || isStartBoiling}
+									disabled={
+										isBloiling || isStartBoiling || isTransferingWorking
+									}
 									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
-										isBloiling || isStartBoiling ? "bg-gray-500" : "bg-white"
+										isBloiling || isStartBoiling || isTransferingWorking
+											? "bg-gray-500"
+											: "bg-white"
 									}`}
 								>
 									<Text
 										className={` text-center font-semibold ${
-											isBloiling || isStartBoiling
+											isBloiling || isStartBoiling || isTransferingWorking
 												? "text-white"
 												: "text-primary"
 										}`}
@@ -384,11 +435,13 @@ const Control = () => {
 										styles.dropdown,
 										isFocus && { borderColor: "white" },
 										isStartTransfering && { backgroundColor: "gray" },
+										checkingJuiceStorage && { backgroundColor: "gray" },
+										isTransferingWorking && { backgroundColor: "gray" },
 									]}
 									placeholderStyle={styles.placeholderStyle}
 									selectedTextStyle={styles.selectedTextStyle}
 									iconStyle={styles.iconStyle}
-									disable={isStartTransfering}
+									disable={isStartTransfering || checkingJuiceStorage}
 									data={toJuiceStorageData}
 									maxHeight={300}
 									labelField="label"
@@ -412,16 +465,27 @@ const Control = () => {
 								/>
 								<TouchableOpacity
 									onPress={activeStartTransfering}
-									disabled={isTrasfering || isStartTransfering}
+									disabled={
+										isTrasfering ||
+										isStartTransfering ||
+										isTransferingWorking ||
+										checkingJuiceStorage
+									}
 									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
-										isTrasfering || isStartTransfering
+										isTrasfering ||
+										isStartTransfering ||
+										isTransferingWorking ||
+										checkingJuiceStorage
 											? "bg-gray-500"
 											: "bg-white"
 									}`}
 								>
 									<Text
 										className={` text-center font-semibold ${
-											isTrasfering || isStartTransfering
+											isTrasfering ||
+											isStartTransfering ||
+											isTransferingWorking ||
+											checkingJuiceStorage
 												? "text-white"
 												: "text-primary"
 										}`}
