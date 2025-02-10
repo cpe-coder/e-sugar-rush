@@ -47,7 +47,7 @@ const HeaderRight = () => {
 			<View className="bg-gray-300 rounded-full">
 				<Image
 					resizeMode="contain"
-					className="w-12 border border-gray-400 rounded-full p-2 h-12"
+					className="w-10 border border-gray-400 rounded-full p-2 h-10"
 					source={!image ? icons.Profile : { uri: image }}
 				/>
 			</View>
