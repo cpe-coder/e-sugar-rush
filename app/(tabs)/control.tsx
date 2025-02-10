@@ -68,48 +68,72 @@ const Control = () => {
 	const [isTransferingWorking, setIsTransferingWorking] = React.useState(false);
 	const [checkingJuiceStorage, setCheckingJuiceStorage] = React.useState(true);
 	const [juiceToBoilerTime, setJuiceToBoilerTime] = React.useState(0);
+	const [isToBoilRunning, setIsToBoilRunning] = React.useState(false);
 	const [juiceToJuiceStorageTime, setJuiceToJuiceStorageTime] =
 		React.useState(0);
-	const [isToBoilRunning, setIsToBoilRunning] = React.useState(false);
 	const [isToJuiceStorageRunninng, setIsToJuiceStorageRunning] =
 		React.useState(false);
 
 	useEffect(() => {
-		const timerRef = ref(database, "Timer/cooking");
+		const timeRef = ref(database, "Timer/juiceToBoiler");
 
-		const onBoilValueChange = onValue(timerRef, (snapshot) => {
+		const onBoilValueChange = onValue(timeRef, (snapshot) => {
 			const newTime = snapshot.val();
 			if (newTime > 0 && newTime !== juiceToBoilerTime) {
 				setJuiceToBoilerTime(newTime);
 				setIsToBoilRunning(true);
 				setTimeout(() => {
-					set(timerRef, 0);
-				}, 1000);
-			}
-		});
-		const onJuiceValueChange = onValue(timerRef, (snapshot) => {
-			const newTime = snapshot.val();
-			if (newTime > 0 && newTime !== juiceToJuiceStorageTime) {
-				setJuiceToJuiceStorageTime(newTime);
-				setIsToJuiceStorageRunning(true);
-				setTimeout(() => {
-					set(timerRef, 0);
+					set(timeRef, 0);
 				}, 1000);
 			}
 		});
 
 		return () => {
 			onBoilValueChange();
-			onJuiceValueChange();
 		};
-	}, [juiceToBoilerTime, juiceToJuiceStorageTime]);
+	}, [juiceToBoilerTime]);
 
 	useEffect(() => {
-		if (!isToBoilRunning || juiceToBoilerTime <= 0) {
+		const timeRef = ref(database, "Timer/juiceToJuiceStorage");
+
+		const onJuiceStorageValueChange = onValue(timeRef, (snapshot) => {
+			const newTime = snapshot.val();
+			if (newTime > 0 && newTime !== juiceToJuiceStorageTime) {
+				setJuiceToJuiceStorageTime(newTime);
+				setIsToJuiceStorageRunning(true);
+				setTimeout(() => {
+					set(timeRef, 0);
+				}, 1000);
+			}
+		});
+
+		return () => {
+			onJuiceStorageValueChange();
+		};
+	}, [juiceToJuiceStorageTime]);
+
+	useEffect(() => {
+		if (!setIsToJuiceStorageRunning || juiceToJuiceStorageTime <= 0) {
 			setIsToBoilRunning(false);
 			return;
 		}
-		if (!isToJuiceStorageRunninng || juiceToJuiceStorageTime <= 0) {
+
+		const juiceStorageTimer = setInterval(() => {
+			setJuiceToJuiceStorageTime((prevTime) => {
+				if (prevTime <= 1000) {
+					clearInterval(juiceStorageTimer);
+					setIsToJuiceStorageRunning(false);
+					return 0;
+				}
+				return prevTime - 1000;
+			});
+		}, 780);
+
+		return () => clearInterval(juiceStorageTimer);
+	}, [isToJuiceStorageRunninng, juiceToJuiceStorageTime]);
+
+	useEffect(() => {
+		if (!isToBoilRunning || juiceToBoilerTime <= 0) {
 			setIsToBoilRunning(false);
 			return;
 		}
@@ -123,26 +147,10 @@ const Control = () => {
 				}
 				return prevTime - 1000;
 			});
-		}, 1000);
+		}, 780);
 
-		const juiceStorageTimer = setInterval(() => {
-			setJuiceToBoilerTime((prevTime) => {
-				if (prevTime <= 1000) {
-					clearInterval(juiceStorageTimer);
-					setIsToJuiceStorageRunning(false);
-					return 0;
-				}
-				return prevTime - 1000;
-			});
-		}, 1000);
-
-		return () => clearInterval(boilTimer || juiceStorageTimer);
-	}, [
-		isToBoilRunning,
-		juiceToBoilerTime,
-		isToJuiceStorageRunninng,
-		juiceToJuiceStorageTime,
-	]);
+		return () => clearInterval(boilTimer);
+	}, [isToBoilRunning, juiceToBoilerTime]);
 
 	useEffect(() => {
 		if (isStartBoiling || isStartTransfering) {
@@ -349,7 +357,7 @@ const Control = () => {
 							source={icons.Transfering}
 							className="w-20 h-20 "
 							resizeMode="contain"
-							// tintColor={"#015d9c"}
+							tintColor={"#015d9c"}
 						/>
 
 						<Text className="text-center text-sm text-gray-500 font-medium">
