@@ -161,7 +161,6 @@ const Control = () => {
 		} else {
 			setIsTransferingWorking(false);
 		}
-
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
 		fetchTemperature();
