@@ -73,9 +73,11 @@ const Control = () => {
 		React.useState(0);
 	const [isToJuiceStorageRunninng, setIsToJuiceStorageRunning] =
 		React.useState(false);
-
 	const [isCooking, setIsCooking] = React.useState(false);
 	const [isDrying, setIsDrying] = React.useState(false);
+	const [isTransferToDrying, setIsTransferToDrying] = React.useState(false);
+	const [isTransferToPulvorizer, setIsTransferToPulvorizer] =
+		React.useState(false);
 
 	useEffect(() => {
 		const timeRef = ref(database, "Timer/juiceToBoiler");
@@ -194,6 +196,8 @@ const Control = () => {
 	useEffect(() => {
 		const cookingTime = ref(database, "Pass/isCooking");
 		const dryingTime = ref(database, "Pass/isDrying");
+		const transferToDrying = ref(database, "Pass/transferToDrying");
+		const transferToPulvorizer = ref(database, "Pass/transferToPulvorizer");
 
 		const subscribeCooking = onValue(cookingTime, (snapshot) => {
 			const value = snapshot.val();
@@ -204,9 +208,24 @@ const Control = () => {
 			const value = snapshot.val();
 			setIsDrying(value);
 		});
+
+		const subscribeTransferToDrying = onValue(transferToDrying, (snapshot) => {
+			const value = snapshot.val();
+			setIsTransferToDrying(value);
+		});
+
+		const subscribeTransferToPulvorizer = onValue(
+			transferToPulvorizer,
+			(snapshot) => {
+				const value = snapshot.val();
+				setIsTransferToPulvorizer(value);
+			}
+		);
 		return () => {
 			subscribeCooking();
 			subscribeDrying();
+			subscribeTransferToDrying();
+			subscribeTransferToPulvorizer();
 		};
 	}, []);
 
@@ -656,6 +675,8 @@ const Control = () => {
 					<Text className="pt-2 absolute -bottom-8 text-2xl text-yellow font-bold italic animate-pulse">
 						{isCooking && "Cooking..."}
 						{isDrying && "Drying..."}
+						{isTransferToDrying && "Transferring to Drying..."}
+						{isTransferToPulvorizer && "Transferring to Pulvorizer..."}
 					</Text>
 				</View>
 			</ScrollView>
