@@ -3,21 +3,19 @@ import CustomInput from "@/components/custom-input";
 import PasswordInput from "@/components/password-input";
 import HiddenEye from "./hidden-eye";
 import ProfileModal from "./profile-modal";
-import TabsHeader from "./tabs-header";
+import Header from "./tabs-header";
 import TabsIcon from "./tabs-icon";
 import UpdateCredentials from "./update-credentials";
 import VisibleEye from "./visible-eye";
 
-const components = {
-	CustomInput,
+export {
 	CustomButton,
-	PasswordInput,
+	CustomInput,
+	Header,
 	HiddenEye,
-	VisibleEye,
-	TabsIcon,
-	TabsHeader,
+	PasswordInput,
 	ProfileModal,
+	TabsIcon,
 	UpdateCredentials,
+	VisibleEye,
 };
-
-export default components;

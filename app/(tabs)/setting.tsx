@@ -1,4 +1,4 @@
-import components from "@/components";
+import { ProfileModal, UpdateCredentials } from "@/components";
 import icons from "@/constant/icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -176,7 +176,7 @@ const Setting = () => {
 					</View>
 				</View>
 
-				<components.UpdateCredentials
+				<UpdateCredentials
 					actions={
 						<>
 							<TouchableOpacity
@@ -252,7 +252,7 @@ const Setting = () => {
 					{successMessage}
 				</Text>
 			</View>
-			<components.ProfileModal
+			<ProfileModal
 				components={
 					<TouchableOpacity
 						onPress={handleModalClose}

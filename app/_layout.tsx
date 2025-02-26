@@ -1,4 +1,4 @@
-import components from "@/components";
+import { Header } from "@/components";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -36,10 +36,10 @@ export default function RootLayout() {
 				name="(tabs)"
 				options={{
 					headerTitle: () => {
-						return <components.TabsHeader.HeaderTitle />;
+						return <Header.HeaderTitle />;
 					},
 					headerRight: () => {
-						return <components.TabsHeader.HeaderRight />;
+						return <Header.HeaderRight />;
 					},
 					// headerTintColor: "#000",
 					headerShadowVisible: false,

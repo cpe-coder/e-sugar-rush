@@ -1,4 +1,4 @@
-import components from "@/components";
+import { TabsIcon } from "@/components";
 import icons from "@/constant/icons";
 import { Tabs } from "expo-router";
 import React from "react";
@@ -25,7 +25,7 @@ const TabsLayout = () => {
 					options={{
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<components.TabsIcon
+							<TabsIcon
 								icon={icons.Home}
 								name="HOME"
 								focused={focused}
@@ -39,7 +39,7 @@ const TabsLayout = () => {
 					options={{
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<components.TabsIcon
+							<TabsIcon
 								icon={icons.Control}
 								name="CONTROL"
 								focused={focused}
@@ -53,7 +53,7 @@ const TabsLayout = () => {
 					options={{
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<components.TabsIcon
+							<TabsIcon
 								icon={icons.Stat}
 								name="STATS"
 								focused={focused}
@@ -67,7 +67,7 @@ const TabsLayout = () => {
 					options={{
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<components.TabsIcon
+							<TabsIcon
 								icon={icons.Setting}
 								name="SETTINGS"
 								focused={focused}

@@ -1,5 +1,5 @@
 import Sugarcane from "@/assets/logo/sugarcane.png";
-import components from "@/components";
+import { CustomButton, CustomInput, PasswordInput } from "@/components";
 import logo from "@/constant/logo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -114,13 +114,13 @@ const SignIn = () => {
 							Hello, log in to your profile
 						</Text>
 						<View className="flex-col w-full px-6 gap-8 justify-center items-center">
-							<components.CustomInput
+							<CustomInput
 								value={username}
 								onChange={handleChangeUsername}
 								placeholder="Username"
 								inputMode="text"
 							/>
-							<components.PasswordInput
+							<PasswordInput
 								value={password}
 								onChange={handleChangePassword}
 								inputMode="text"
@@ -134,11 +134,11 @@ const SignIn = () => {
 								disabled ? "opacity-50" : ""
 							}`}
 						>
-							<components.CustomButton
+							<CustomButton
 								text={loading ? "Loading..." : "Login"}
 								onDisabled={disabled}
 								onPress={handleLogin}
-								style="bg-yellow"
+								style="bg-yellow py-2"
 								textStyle="text-black"
 							/>
 						</View>
