@@ -138,7 +138,7 @@ const SignIn = () => {
 								text={loading ? "Loading..." : "Login"}
 								onDisabled={disabled}
 								onPress={handleLogin}
-								style="bg-yellow py-2"
+								style="bg-yellow font-bold"
 								textStyle="text-black"
 							/>
 						</View>

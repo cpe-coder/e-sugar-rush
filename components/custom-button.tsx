@@ -16,7 +16,7 @@ const CustomButton = ({
 }) => {
 	return (
 		<TouchableOpacity
-			className={`rounded-xl p-2 flex items-center justify-center ${style}`}
+			className={`rounded-xl px-2 py-4 flex items-center justify-center ${style}`}
 			onPress={onPress}
 			disabled={onDisabled}
 		>
