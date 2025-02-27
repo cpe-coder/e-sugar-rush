@@ -196,7 +196,7 @@ const Control = () => {
 	useEffect(() => {
 		const cookingTime = ref(database, "Pass/isCooking");
 		const dryingTime = ref(database, "Pass/isDrying");
-		const transferToDrying = ref(database, "Pass/transferToDrying");
+		const transferToDrying = ref(database, "Pass/transferToDrying");            
 		const transferToPulvorizer = ref(database, "Pass/transferToPulvorizer");
 
 		const subscribeCooking = onValue(cookingTime, (snapshot) => {
