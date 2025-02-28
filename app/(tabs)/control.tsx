@@ -50,9 +50,9 @@ const Control = () => {
 	const [isPower, setIsPower] = React.useState(false);
 	const [extract, setExtract] = React.useState(false);
 	const [isExtract, setIsExtract] = React.useState(false);
-	const [boil, setBoil] = React.useState(false);
+	// const [boil, setBoil] = React.useState(false);
 	const [isBoil, setIsBoil] = React.useState(false);
-	const [dry, setDry] = React.useState(false);
+	// const [dry, setDry] = React.useState(false);
 	const [isDry, setIsDry] = React.useState(false);
 	const [startExtraction, setStartExtraction] = React.useState(false);
 	const [startTransfering, setStartTransfering] = React.useState(false);
@@ -334,19 +334,19 @@ const Control = () => {
 		setIsExtract(extract);
 	};
 
-	const activeBoil = async () => {
-		const valueRef = ref(database, "Controls/boil");
-		await set(valueRef, boil ? true : false);
-		setBoil((prev) => !prev);
-		setIsBoil(boil);
-	};
+	// const activeBoil = async () => {
+	// 	const valueRef = ref(database, "Controls/boil");
+	// 	await set(valueRef, boil ? true : false);
+	// 	setBoil((prev) => !prev);
+	// 	setIsBoil(boil);
+	// };
 
-	const activeDry = async () => {
-		const valueRef = ref(database, "Controls/dry");
-		await set(valueRef, dry ? true : false);
-		setDry((prev) => !prev);
-		setIsDry(dry);
-	};
+	// const activeDry = async () => {
+	// 	const valueRef = ref(database, "Controls/dry");
+	// 	await set(valueRef, dry ? true : false);
+	// 	setDry((prev) => !prev);
+	// 	setIsDry(dry);
+	// };
 
 	const activeStartExtraction = async () => {
 		const valueRef = ref(database, "Controls/startExtraction");
@@ -451,13 +451,13 @@ const Control = () => {
 								source={icons.Power}
 							/>
 						</TouchableOpacity>
-						<View className="flex-row items-center mt-2 justify-between">
+						<View className="flex-row items-center mt-2 justify-center">
 							<TouchableOpacity
 								disabled={
 									disable || isTransferingWorking || isCooking || isDrying
 								}
 								onPress={activeExtract}
-								className={`rounded-2xl gap-1 py-2 px-4 justify-center items-center ${
+								className={`rounded-2xl w-24 gap-1 py-2 px-4 justify-center items-center ${
 									disable || isTransferingWorking || isCooking || isDrying
 										? "bg-gray-500"
 										: "bg-primary"
@@ -471,7 +471,7 @@ const Control = () => {
 								/>
 								<Text className="text-white">Extract</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
+							{/* <TouchableOpacity
 								disabled={
 									disable || isTransferingWorking || isCooking || isDrying
 								}
@@ -508,7 +508,7 @@ const Control = () => {
 									source={icons.Dry}
 								/>
 								<Text className="text-white">Dry</Text>
-							</TouchableOpacity>
+							</TouchableOpacity> */}
 						</View>
 						<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
 							<Text className="text-white text-3xl font-semibold">
@@ -531,11 +531,12 @@ const Control = () => {
 										isTransferingWorking && { backgroundColor: "gray" },
 										isCooking && { backgroundColor: "gray" },
 										isDrying && { backgroundColor: "gray" },
+										power && { backgroundColor: "gray" },
 									]}
 									placeholderStyle={styles.placeholderStyle}
 									selectedTextStyle={styles.selectedTextStyle}
 									iconStyle={styles.iconStyle}
-									disable={isStartBoiling}
+									disable={isStartBoiling || isTransferingWorking || power}
 									data={toBoilJuiceData}
 									maxHeight={300}
 									labelField="label"
@@ -564,6 +565,7 @@ const Control = () => {
 										isStartBoiling ||
 										isTransferingWorking ||
 										isCooking ||
+										power ||
 										isDrying
 									}
 									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
@@ -571,6 +573,7 @@ const Control = () => {
 										isStartBoiling ||
 										isTransferingWorking ||
 										isCooking ||
+										power ||
 										isDrying
 											? "bg-gray-500"
 											: "bg-white"
@@ -582,6 +585,7 @@ const Control = () => {
 											isStartBoiling ||
 											isTransferingWorking ||
 											isCooking ||
+											power ||
 											isDrying
 												? "text-white"
 												: "text-primary"
@@ -607,11 +611,12 @@ const Control = () => {
 										isTransferingWorking && { backgroundColor: "gray" },
 										isCooking && { backgroundColor: "gray" },
 										isDrying && { backgroundColor: "gray" },
+										power && { backgroundColor: "gray" },
 									]}
 									placeholderStyle={styles.placeholderStyle}
 									selectedTextStyle={styles.selectedTextStyle}
 									iconStyle={styles.iconStyle}
-									disable={isStartTransfering || checkingJuiceStorage}
+									disable={isStartTransfering || checkingJuiceStorage || power}
 									data={toJuiceStorageData}
 									maxHeight={300}
 									labelField="label"
@@ -641,7 +646,8 @@ const Control = () => {
 										isTransferingWorking ||
 										checkingJuiceStorage ||
 										isCooking ||
-										isDrying
+										isDrying ||
+										power
 									}
 									className={`p-2 px-4 rounded-xl w-24 self-center mt-2 ${
 										isTrasfering ||
@@ -649,6 +655,7 @@ const Control = () => {
 										isTransferingWorking ||
 										checkingJuiceStorage ||
 										isCooking ||
+										power ||
 										isDrying
 											? "bg-gray-500"
 											: "bg-white"
@@ -661,6 +668,7 @@ const Control = () => {
 											isTransferingWorking ||
 											checkingJuiceStorage ||
 											isCooking ||
+											power ||
 											isDrying
 												? "text-white"
 												: "text-primary"
