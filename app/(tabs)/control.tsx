@@ -196,7 +196,7 @@ const Control = () => {
 	useEffect(() => {
 		const cookingTime = ref(database, "Pass/isCooking");
 		const dryingTime = ref(database, "Pass/isDrying");
-		const transferToDrying = ref(database, "Pass/transferToDrying");            
+		const transferToDrying = ref(database, "Pass/transferToDrying");
 		const transferToPulvorizer = ref(database, "Pass/transferToPulvorizer");
 
 		const subscribeCooking = onValue(cookingTime, (snapshot) => {
@@ -457,7 +457,7 @@ const Control = () => {
 									disable || isTransferingWorking || isCooking || isDrying
 								}
 								onPress={activeExtract}
-								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+								className={`rounded-2xl gap-1 py-2 px-4 justify-center items-center ${
 									disable || isTransferingWorking || isCooking || isDrying
 										? "bg-gray-500"
 										: "bg-primary"
