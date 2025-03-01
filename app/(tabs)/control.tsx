@@ -52,6 +52,8 @@ const Control = () => {
 	const [isExtract, setIsExtract] = React.useState(false);
 	const [toMainSorage, setToMainStorage] = React.useState(false);
 	const [isToMainSorage, setIsToMainStorage] = React.useState(false);
+	const [disableFilteredButton, setDisableFilteredButton] =
+		React.useState(false);
 	// const [dry, setDry] = React.useState(false);
 	// const [isDry, setIsDry] = React.useState(false);
 	const [startExtraction, setStartExtraction] = React.useState(false);
@@ -82,6 +84,18 @@ const Control = () => {
 	useEffect(() => {
 		const timeRef = ref(database, "Timer/juiceToBoiler");
 
+		const getMainStorage = async () => {
+			const valueRef = ref(database, "Sensors/mainStorage");
+
+			const subscribe = await onValue(valueRef, (snapshot) => {
+				const value = snapshot.val();
+				value <= 10
+					? setDisableFilteredButton(false)
+					: setDisableFilteredButton(true);
+			});
+			return () => subscribe();
+		};
+
 		const onBoilValueChange = onValue(timeRef, (snapshot) => {
 			const newTime = snapshot.val();
 			if (newTime > 0 && newTime !== juiceToBoilerTime) {
@@ -95,6 +109,7 @@ const Control = () => {
 
 		return () => {
 			onBoilValueChange();
+			getMainStorage();
 		};
 	}, [juiceToBoilerTime]);
 
@@ -453,11 +468,19 @@ const Control = () => {
 							</TouchableOpacity>
 							<TouchableOpacity
 								disabled={
-									disable || isTransferingWorking || isCooking || isDrying
+									disable ||
+									isTransferingWorking ||
+									isCooking ||
+									isDrying ||
+									disableFilteredButton
 								}
 								onPress={activePumpToMainStorage}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable || isTransferingWorking || isCooking || isDrying
+									disable ||
+									isTransferingWorking ||
+									isCooking ||
+									isDrying ||
+									disableFilteredButton
 										? "bg-gray-500"
 										: "bg-primary"
 								}`}
