@@ -50,10 +50,10 @@ const Control = () => {
 	const [isPower, setIsPower] = React.useState(false);
 	const [extract, setExtract] = React.useState(false);
 	const [isExtract, setIsExtract] = React.useState(false);
-	// const [boil, setBoil] = React.useState(false);
-	const [isBoil, setIsBoil] = React.useState(false);
+	const [toMainSorage, setToMainStorage] = React.useState(false);
+	const [isToMainSorage, setIsToMainStorage] = React.useState(false);
 	// const [dry, setDry] = React.useState(false);
-	const [isDry, setIsDry] = React.useState(false);
+	// const [isDry, setIsDry] = React.useState(false);
 	const [startExtraction, setStartExtraction] = React.useState(false);
 	const [startTransfering, setStartTransfering] = React.useState(false);
 	const [isStartBoiling, setIsStartBoiling] = React.useState(false);
@@ -168,8 +168,7 @@ const Control = () => {
 		fetchTemperature();
 		getPowerValue();
 		getExtractValue();
-		getBoilValue();
-		getDryValue();
+		getFilteredValue();
 		getStartExtractionValue();
 		getStartTransferingValue();
 		getJuiceStorageValue();
@@ -266,11 +265,9 @@ const Control = () => {
 
 	const updateControls = async () => {
 		const extractValueRef = ref(database, "Controls/extract");
-		const boilValueRef = ref(database, "Controls/boil");
-		const dryValueRef = ref(database, "Controls/dry");
+		const filteredValue = ref(database, "Controls/filtered");
 		await set(extractValueRef, false);
-		await set(boilValueRef, false);
-		await set(dryValueRef, false);
+		await set(filteredValue, false);
 	};
 
 	const getStartExtractionValue = async () => {
@@ -302,15 +299,10 @@ const Control = () => {
 		const value = await get(valueRef);
 		setIsExtract(value.val());
 	};
-	const getBoilValue = async () => {
-		const valueRef = ref(database, "Controls/boil");
+	const getFilteredValue = async () => {
+		const valueRef = ref(database, "Controls/filtered");
 		const value = await get(valueRef);
-		setIsBoil(value.val());
-	};
-	const getDryValue = async () => {
-		const valueRef = ref(database, "Controls/dry");
-		const value = await get(valueRef);
-		setIsDry(value.val());
+		setIsToMainStorage(value.val());
 	};
 
 	const onRefresh = React.useCallback(() => {
@@ -334,19 +326,12 @@ const Control = () => {
 		setIsExtract(extract);
 	};
 
-	// const activeBoil = async () => {
-	// 	const valueRef = ref(database, "Controls/boil");
-	// 	await set(valueRef, boil ? true : false);
-	// 	setBoil((prev) => !prev);
-	// 	setIsBoil(boil);
-	// };
-
-	// const activeDry = async () => {
-	// 	const valueRef = ref(database, "Controls/dry");
-	// 	await set(valueRef, dry ? true : false);
-	// 	setDry((prev) => !prev);
-	// 	setIsDry(dry);
-	// };
+	const activePumpToMainStorage = async () => {
+		const valueRef = ref(database, "Controls/filtered");
+		await set(valueRef, toMainSorage ? true : false);
+		setToMainStorage((prev) => !prev);
+		setIsToMainStorage(toMainSorage);
+	};
 
 	const activeStartExtraction = async () => {
 		const valueRef = ref(database, "Controls/startExtraction");
@@ -422,12 +407,7 @@ const Control = () => {
 							></View>
 							<View
 								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									isBoil && "bg-yellow"
-								}`}
-							></View>
-							<View
-								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									isDry && "bg-yellow"
+									isToMainSorage && "bg-yellow"
 								}`}
 							></View>
 						</View>
@@ -451,7 +431,7 @@ const Control = () => {
 								source={icons.Power}
 							/>
 						</TouchableOpacity>
-						<View className="flex-row items-center mt-2 justify-center">
+						<View className="flex-row items-center mt-2 justify-center gap-10">
 							<TouchableOpacity
 								disabled={
 									disable || isTransferingWorking || isCooking || isDrying
@@ -471,11 +451,11 @@ const Control = () => {
 								/>
 								<Text className="text-white">Extract</Text>
 							</TouchableOpacity>
-							{/* <TouchableOpacity
+							<TouchableOpacity
 								disabled={
 									disable || isTransferingWorking || isCooking || isDrying
 								}
-								onPress={activeBoil}
+								onPress={activePumpToMainStorage}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
 									disable || isTransferingWorking || isCooking || isDrying
 										? "bg-gray-500"
@@ -486,11 +466,11 @@ const Control = () => {
 									className="w-8 h-8"
 									resizeMode="contain"
 									tintColor="#fff"
-									source={icons.Boil}
+									source={icons.Filtered}
 								/>
-								<Text className="text-white">Boil</Text>
+								<Text className="text-white">Filtered</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
+							{/* <TouchableOpacity
 								disabled={
 									disable || isTransferingWorking || isCooking || isDrying
 								}

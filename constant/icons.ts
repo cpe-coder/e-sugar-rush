@@ -7,6 +7,7 @@ import Control from "@/assets/icons/control.png";
 import Dry from "@/assets/icons/dry.png";
 import Exit from "@/assets/icons/exit.png";
 import Eye from "@/assets/icons/eye.png";
+import Filtered from "@/assets/icons/filtered.png";
 import Home from "@/assets/icons/home.png";
 import Pen from "@/assets/icons/pen.png";
 import Power from "@/assets/icons/power.png";
@@ -38,6 +39,7 @@ const icons = {
 	Close,
 	Profile,
 	Transfering,
+	Filtered,
 };
 
 export default icons;
