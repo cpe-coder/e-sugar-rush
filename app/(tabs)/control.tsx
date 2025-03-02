@@ -89,9 +89,11 @@ const Control = () => {
 
 			const subscribe = await onValue(valueRef, (snapshot) => {
 				const value = snapshot.val();
-				value <= 10
-					? setDisableFilteredButton(false)
-					: setDisableFilteredButton(true);
+				if (value > 14) {
+					setDisableFilteredButton(true);
+				} else {
+					setDisableFilteredButton(false);
+				}
 			});
 			return () => subscribe();
 		};
