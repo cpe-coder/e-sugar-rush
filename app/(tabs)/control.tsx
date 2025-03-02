@@ -80,6 +80,7 @@ const Control = () => {
 	const [isTransferToDrying, setIsTransferToDrying] = React.useState(false);
 	const [isTransferToPulvorizer, setIsTransferToPulvorizer] =
 		React.useState(false);
+	const [isPulvorizer, setIsPulvorizer] = React.useState(false);
 
 	useEffect(() => {
 		const timeRef = ref(database, "Timer/juiceToBoiler");
@@ -214,10 +215,16 @@ const Control = () => {
 		const dryingTime = ref(database, "Pass/isDrying");
 		const transferToDrying = ref(database, "Pass/transferToDrying");
 		const transferToPulvorizer = ref(database, "Pass/transferToPulvorizer");
+		const pulvorizer = ref(database, "Pass/pulvorizer");
 
 		const subscribeCooking = onValue(cookingTime, (snapshot) => {
 			const value = snapshot.val();
 			setIsCooking(value);
+		});
+
+		const subscribePulvorizer = onValue(pulvorizer, (snapshot) => {
+			const value = snapshot.val();
+			setIsPulvorizer(value);
 		});
 
 		const subscribeDrying = onValue(dryingTime, (snapshot) => {
@@ -242,6 +249,7 @@ const Control = () => {
 			subscribeDrying();
 			subscribeTransferToDrying();
 			subscribeTransferToPulvorizer();
+			subscribePulvorizer();
 		};
 	}, []);
 
@@ -690,6 +698,7 @@ const Control = () => {
 						{isDrying && "Drying..."}
 						{isTransferToDrying && "Transferring to Drying..."}
 						{isTransferToPulvorizer && "Transferring to Pulvorizer..."}
+						{isPulvorizer && "Pulvorizing..."}
 					</Text>
 				</View>
 			</ScrollView>
