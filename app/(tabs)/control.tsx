@@ -18,30 +18,30 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const toBoilJuiceData = [
 	{ label: "None", value: 0 },
-	{ label: "1 Litter", value: 1 },
-	{ label: "2 Litters", value: 2 },
-	{ label: "3 Litters", value: 3 },
-	{ label: "4 Litters", value: 4 },
-	{ label: "5 Litters", value: 5 },
-	{ label: "6 Litters", value: 6 },
-	{ label: "7 Litters", value: 7 },
-	{ label: "8 Litters", value: 8 },
-	{ label: "9 Litters", value: 9 },
-	{ label: "10 Litters", value: 10 },
-	{ label: "11 Litters", value: 10 },
-	{ label: "12 Litters", value: 10 },
-	{ label: "13 Litters", value: 10 },
-	{ label: "14 Litters", value: 10 },
-	{ label: "15 Litters", value: 10 },
+	{ label: "1 Liter", value: 1 },
+	{ label: "2 Liters", value: 2 },
+	{ label: "3 Liters", value: 3 },
+	{ label: "4 Liters", value: 4 },
+	{ label: "5 Liters", value: 5 },
+	{ label: "6 Liters", value: 6 },
+	{ label: "7 Liters", value: 7 },
+	{ label: "8 Liters", value: 8 },
+	{ label: "9 Liters", value: 9 },
+	{ label: "10 Liters", value: 10 },
+	{ label: "11 Liters", value: 10 },
+	{ label: "12 Liters", value: 10 },
+	{ label: "13 Liters", value: 10 },
+	{ label: "14 Liters", value: 10 },
+	{ label: "15 Liters", value: 10 },
 ];
 
 const toJuiceStorageData = [
 	{ label: "None", value: 0 },
-	{ label: "1 Litter", value: 1 },
-	{ label: "2 Litters", value: 2 },
-	{ label: "3 Litters", value: 3 },
-	{ label: "4 Litters", value: 4 },
-	{ label: "5 Litters", value: 5 },
+	{ label: "1 Liter", value: 1 },
+	{ label: "2 Liters", value: 2 },
+	{ label: "3 Liters", value: 3 },
+	{ label: "4 Liters", value: 4 },
+	{ label: "5 Liters", value: 5 },
 ];
 
 const Control = () => {
@@ -60,7 +60,6 @@ const Control = () => {
 	const [startTransfering, setStartTransfering] = React.useState(false);
 	const [isStartBoiling, setIsStartBoiling] = React.useState(false);
 	const [isStartTransfering, setIsStartTransfering] = React.useState(false);
-	const [temperature, setTemperature] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
 	const [isBloiling, setIsBoiling] = React.useState(false);
 	const [isTrasfering, setIsTransfering] = React.useState(false);
@@ -81,6 +80,14 @@ const Control = () => {
 	const [isTransferToPulvorizer, setIsTransferToPulvorizer] =
 		React.useState(false);
 	const [isPulvorizer, setIsPulvorizer] = React.useState(false);
+	const [boil, setBoil] = React.useState(false);
+	const [isBoil, setIsBoil] = React.useState(false);
+	const [dry, setDry] = React.useState(false);
+	const [isDry, setIsDry] = React.useState(false);
+	const [isPulverize, setIsPulverize] = React.useState(false);
+	const [pulverize, setPulverize] = React.useState(false);
+	const [push, setPush] = React.useState(false);
+	const [isPush, setIsPush] = React.useState(false);
 
 	useEffect(() => {
 		const timeRef = ref(database, "Timer/juiceToBoiler");
@@ -183,13 +190,16 @@ const Control = () => {
 		}
 		setBoiLJuiceSize();
 		setTransferJuiceSize();
-		fetchTemperature();
 		getPowerValue();
+		getBoilValue();
 		getExtractValue();
 		getFilteredValue();
 		getStartExtractionValue();
 		getStartTransferingValue();
 		getJuiceStorageValue();
+		getDryValue();
+		getPushValue();
+		getPulverizeValue();
 		if (!isPower) {
 			setDisable(true);
 			updateControls();
@@ -278,21 +288,19 @@ const Control = () => {
 		await set(valueRef, toJuiceStorageValue);
 	};
 
-	const fetchTemperature = () => {
-		const valueRef = ref(database, "Sensors/temperature");
-		const subscribe = onValue(valueRef, (snapshot) => {
-			const value = snapshot.val();
-			setTemperature(value);
-		});
-
-		return () => subscribe();
-	};
-
 	const updateControls = async () => {
 		const extractValueRef = ref(database, "Controls/extract");
 		const filteredValue = ref(database, "Controls/filtered");
+		const boilValue = ref(database, "Controls/boil");
+		const dryValue = ref(database, "Controls/dry");
+		const pulverizeValue = ref(database, "Controls/pulverize");
+		const pushValue = ref(database, "Controls/push");
 		await set(extractValueRef, false);
 		await set(filteredValue, false);
+		await set(boilValue, false);
+		await set(dryValue, false);
+		await set(pulverizeValue, false);
+		await set(pushValue, false);
 	};
 
 	const getStartExtractionValue = async () => {
@@ -324,10 +332,31 @@ const Control = () => {
 		const value = await get(valueRef);
 		setIsExtract(value.val());
 	};
+	const getPushValue = async () => {
+		const valueRef = ref(database, "Controls/push");
+		const value = await get(valueRef);
+		setIsPush(value.val());
+	};
+	const getBoilValue = async () => {
+		const valueRef = ref(database, "Controls/boil");
+		const value = await get(valueRef);
+		setIsBoil(value.val());
+	};
+
 	const getFilteredValue = async () => {
 		const valueRef = ref(database, "Controls/filtered");
 		const value = await get(valueRef);
 		setIsToMainStorage(value.val());
+	};
+	const getDryValue = async () => {
+		const valueRef = ref(database, "Controls/dry");
+		const value = await get(valueRef);
+		setIsDry(value.val());
+	};
+	const getPulverizeValue = async () => {
+		const valueRef = ref(database, "Controls/pulverize");
+		const value = await get(valueRef);
+		setIsPulverize(value.val());
 	};
 
 	const onRefresh = React.useCallback(() => {
@@ -350,6 +379,24 @@ const Control = () => {
 		setExtract((prev) => !prev);
 		setIsExtract(extract);
 	};
+	const activeDry = async () => {
+		const valueRef = ref(database, "Controls/dry");
+		await set(valueRef, dry ? true : false);
+		setDry((prev) => !prev);
+		setIsDry(extract);
+	};
+	const activePush = async () => {
+		const valueRef = ref(database, "Controls/push");
+		await set(valueRef, push ? true : false);
+		setPush((prev) => !prev);
+		setIsPush(push);
+	};
+	const activePulverize = async () => {
+		const valueRef = ref(database, "Controls/pulverize");
+		await set(valueRef, pulverize ? true : false);
+		setPulverize((prev) => !prev);
+		setIsPulverize(extract);
+	};
 
 	const activePumpToMainStorage = async () => {
 		const valueRef = ref(database, "Controls/filtered");
@@ -358,11 +405,18 @@ const Control = () => {
 		setIsToMainStorage(toMainSorage);
 	};
 
+	const activeBoiler = async () => {
+		const valueRef = ref(database, "Controls/boil");
+		await set(valueRef, boil ? true : false);
+		setBoil((prev) => !prev);
+		setIsBoil(boil);
+	};
+
 	const activeStartExtraction = async () => {
 		const valueRef = ref(database, "Controls/startExtraction");
 		await set(valueRef, startExtraction ? true : false);
 		setStartExtraction((prev) => !prev);
-		setIsStartBoiling(startExtraction);
+		startExtraction;
 	};
 
 	const activeStartTransfering = async () => {
@@ -391,7 +445,7 @@ const Control = () => {
 					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 				}
 			>
-				<View className="justify-center items-center">
+				<View className="justify-center items-center pb-8">
 					<Image source={logo.EsugarLogo} />
 					<View
 						className={`w-full   z-[2000px]  bg-white rounded-xl justify-center items-center py-6 gap-2 ${
@@ -425,28 +479,13 @@ const Control = () => {
 									isPower && "bg-red-500"
 								}`}
 							></View>
-							<View
-								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									isExtract && "bg-yellow"
-								}`}
-							></View>
-							<View
-								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
-									isToMainSorage && "bg-yellow"
-								}`}
-							></View>
 						</View>
 						<Text className="text-white text-lg text-center mb-4">
 							MAIN CONTROLS
 						</Text>
 						<TouchableOpacity
 							onPress={activePower}
-							disabled={isTransferingWorking || isCooking || isDrying}
-							className={`flex-row gap-2 items-center justify-center py-2 w-full rounded-2xl ${
-								isTransferingWorking || isCooking || isDrying
-									? "bg-gray-300"
-									: "bg-white"
-							} `}
+							className="flex-row gap-2 items-center justify-center py-2 w-full rounded-2xl bg-white"
 						>
 							<Text className="text-2xl font-bold text-textColor ">Power</Text>
 							<Image
@@ -456,16 +495,29 @@ const Control = () => {
 								source={icons.Power}
 							/>
 						</TouchableOpacity>
-						<View className="flex-row items-center mt-2 justify-center gap-10">
+						<View className="flex-row items-center justify-around pt-2">
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 items-start rounded-full ${
+									isExtract && "bg-yellow"
+								}`}
+							></View>
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
+									isToMainSorage && "bg-yellow"
+								}`}
+							></View>
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
+									isBoil && "bg-yellow"
+								}`}
+							></View>
+						</View>
+						<View className="flex-row items-center mt-2 justify-between gap-2">
 							<TouchableOpacity
-								disabled={
-									disable || isTransferingWorking || isCooking || isDrying
-								}
+								disabled={disable}
 								onPress={activeExtract}
 								className={`rounded-2xl w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable || isTransferingWorking || isCooking || isDrying
-										? "bg-gray-500"
-										: "bg-primary"
+									disable ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -477,22 +529,10 @@ const Control = () => {
 								<Text className="text-white">Extract</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={
-									disable ||
-									isTransferingWorking ||
-									isCooking ||
-									isDrying ||
-									disableFilteredButton
-								}
+								disabled={disable}
 								onPress={activePumpToMainStorage}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable ||
-									isTransferingWorking ||
-									isCooking ||
-									isDrying ||
-									disableFilteredButton
-										? "bg-gray-500"
-										: "bg-primary"
+									disable ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -503,15 +543,46 @@ const Control = () => {
 								/>
 								<Text className="text-white">Filtered</Text>
 							</TouchableOpacity>
-							{/* <TouchableOpacity
-								disabled={
-									disable || isTransferingWorking || isCooking || isDrying
-								}
+							<TouchableOpacity
+								disabled={disable}
+								onPress={activeBoiler}
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
+							>
+								<Image
+									className="w-8 h-8"
+									resizeMode="contain"
+									tintColor="#fff"
+									source={icons.boil}
+								/>
+								<Text className="text-white">Boil</Text>
+							</TouchableOpacity>
+						</View>
+						<View className="flex-row items-center justify-around pt-2">
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 items-start rounded-full ${
+									isDry && "bg-yellow"
+								}`}
+							></View>
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 items-start rounded-full ${
+									isPush && "bg-yellow"
+								}`}
+							></View>
+
+							<View
+								className={`w-4 h-4 border-[1px] border-gray-300 rounded-full ${
+									isPulverize && "bg-yellow"
+								}`}
+							></View>
+						</View>
+						<View className="flex-row items-center mt-2 justify-center gap-2">
+							<TouchableOpacity
+								disabled={disable}
 								onPress={activeDry}
 								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
-									disable || isTransferingWorking || isCooking || isDrying
-										? "bg-gray-500"
-										: "bg-primary"
+									disable ? "bg-gray-500" : "bg-primary"
 								}`}
 							>
 								<Image
@@ -521,15 +592,37 @@ const Control = () => {
 									source={icons.Dry}
 								/>
 								<Text className="text-white">Dry</Text>
-							</TouchableOpacity> */}
-						</View>
-						<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
-							<Text className="text-white text-3xl font-semibold">
-								{Number(temperature).toFixed(2)}&#8451;
-							</Text>
-							<Text className="text-white text-3xl font-semibold">
-								Temperature
-							</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								disabled={disable}
+								onPress={activePush}
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
+							>
+								<Image
+									className="w-8 h-8"
+									resizeMode="contain"
+									tintColor="#fff"
+									source={icons.push}
+								/>
+								<Text className="text-white">Push</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								disabled={disable}
+								onPress={activePulverize}
+								className={`rounded-2xl  w-24 gap-1 py-2 px-4 justify-center items-center ${
+									disable ? "bg-gray-500" : "bg-primary"
+								}`}
+							>
+								<Image
+									className="w-8 h-8"
+									resizeMode="contain"
+									tintColor="#fff"
+									source={icons.pulverize}
+								/>
+								<Text className="text-white">Pulverize</Text>
+							</TouchableOpacity>
 						</View>
 						<View className="w-full pt-2 mt-4 px-8 gap-4 border-t-2 border-gray-300">
 							<Text className="text-center text-white font-bold text-xl">
@@ -693,7 +786,7 @@ const Control = () => {
 							</View>
 						</View>
 					</View>
-					<Text className="pt-2 absolute -bottom-8 text-2xl text-yellow font-bold italic animate-pulse">
+					<Text className="absolute text-2xl bottom-0 text-yellow font-bold italic animate-pulse">
 						{isCooking && "Cooking..."}
 						{isDrying && "Drying..."}
 						{isTransferToDrying && "Transferring to Drying..."}

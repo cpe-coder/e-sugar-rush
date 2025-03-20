@@ -48,7 +48,7 @@ const SignIn = () => {
 		};
 		try {
 			axios
-				.post("https://e-sugar-rush-server.vercel.app/auth/login", data)
+				.post("https://e-sugar-rush-server-lac.vercel.app/auth/login", data)
 				.then(async (res) => {
 					console.log({ data: res.data });
 					if (res.data.status === "ok") {
@@ -125,7 +125,7 @@ const SignIn = () => {
 								onChange={handleChangePassword}
 								inputMode="text"
 								placeholder="Password"
-								styleProp="mx-[107px] mt-[12px]"
+								styleProp="mx-[80px] mt-[12px]"
 							/>
 						</View>
 

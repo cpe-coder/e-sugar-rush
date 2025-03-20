@@ -1,5 +1,5 @@
 import Bell from "@/assets/icons/bell.png";
-import Boil from "@/assets/icons/boil.png";
+import { default as Boil, default as boil } from "@/assets/icons/boil.png";
 import Boy from "@/assets/icons/boy.png";
 import Close from "@/assets/icons/close.png";
 import ClosedEye from "@/assets/icons/closedeye.png";
@@ -12,6 +12,8 @@ import Home from "@/assets/icons/home.png";
 import Pen from "@/assets/icons/pen.png";
 import Power from "@/assets/icons/power.png";
 import Profile from "@/assets/icons/profile.png";
+import pulverize from "@/assets/icons/pulverize.png";
+import push from "@/assets/icons/push.png";
 import Roller from "@/assets/icons/roller.png";
 import Security from "@/assets/icons/security.png";
 import Setting from "@/assets/icons/setting.png";
@@ -40,6 +42,9 @@ const icons = {
 	Profile,
 	Transfering,
 	Filtered,
+	boil,
+	pulverize,
+	push,
 };
 
 export default icons;
