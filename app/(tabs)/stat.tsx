@@ -196,14 +196,14 @@ const Stat = () => {
 						</View>
 					</View>
 					<View className="w-full py-3 mt-7 bg-yellowGreen rounded-2xl justify-center items-center flex-row gap-3">
-							<Text className="text-white text-3xl font-semibold">
-								{Number(temperature).toFixed(2)}&#8451;
-							</Text>
-							<Text className="text-white text-3xl font-semibold">
-								Temperature
-							</Text>
-						</View>
-					<View className="w-full bg-white mb-4 mt-10 rounded-3xl py-3 justify-center items-center">
+						<Text className="text-white text-3xl font-semibold">
+							{Number(temperature).toFixed(2)}&#8451;
+						</Text>
+						<Text className="text-white text-3xl font-semibold">
+							Temperature
+						</Text>
+					</View>
+					{/* <View className="w-full bg-white mb-4 mt-10 rounded-3xl py-3 justify-center items-center">
 						<Text className="text-primary font-bold text-xl text-center">
 							Remaining Time For Cooking
 						</Text>
@@ -218,7 +218,7 @@ const Stat = () => {
 						<Text className="text-white font-bold text-2xl text-center">
 							{formatTime(dryingTime)}
 						</Text>
-					</View>
+					</View> */}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
